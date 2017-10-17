@@ -1,0 +1,320 @@
+Python Package and Version Management - Which Should I Use?
+
+There are a number of similar-sounding Python packages used to manage either versions of Python or packages in a project. If you're not familiar with them, it's easy to get them confused.
+
+So far, I've seen these:
+
+* pyenv
+* virtualenv
+* virtualenvwrapper
+* venv
+* pyenv-virtualenv
+* pipenv
+
+No doubt, there are probably others that could fit in this list also. To get some clarity, here's a quick rundown on what these packages are and what they do.
+
+* *pyenv*: used to manage different installations of Python versions on a server
+
+* *virtualenv*: used to manage different sets of packages for a Python project based on a common environment
+
+* *virtualenvwrapper*: a wrapper and helper package to extend functionality of virtualenv
+
+* *venv*: a package that ships with Python3 to use with the module option (-m) of the interpreter to handle virtual environments. So far though, I've not heard of many Python developers using it. I probably wouldn't use it but I think it wouldn't hurt to at least be familiar with it.
+
+* *pyvenv*: yet another package that shipped with Python 3 but is now deprecated in 3.6 due to a number of problems. I would avoid using it for any new projects.
+
+I have not tried using venv (or pyvenv) but I am familiar with the others in the list. For me, I've worked mostly with pyenv for about 2 years now. Pyenv has helped quite a bit in dealing with project packages and Python version management. I've never had a significant problem with it. It's actually very easy to use once you get the hang of it. 
+
+Below, I'll give you a quick set of steps to get pyenv installed on an Ubuntu 16 machine:
+
+First, let's install any necessary packages (keep in mind that on RedHat style systems, the packages will have different names):
+
+```
+$ sudo apt update
+$ sudo apt install build-essential
+$ sudo apt install libbz2-dev libssl-dev libreadline-dev libsqlite3-dev zlib1g-dev
+```
+
+Now, let's install pyenv. You can get it from Github: 
+
+```
+$ curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
+```
+
+Next, add the following code to the end of your /home/<username>/.bashrc file (or to .bash_profile if you're on a Redhat style system):
+
+```bash
+export PATH="/home/hseritt/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+```
+
+Source your .bashrc (or .bash_profile if you're using a RedHat style system) file so that pyenv and helper executables will now be in your path:
+
+```
+$ . .bashrc 
+```
+
+To ensure pyenv is properly installed, let's check the version of the current Python environment:
+
+```
+$ pyenv version
+system (set by /home/hseritt/.pyenv/version)
+```
+
+*If the last command is not showing similar output, you'll need to Google around a bit to see what the problem is and how to fix it. There shouldn't be much to fix, if at all.*
+
+Ok, if you've got it working, now it's time to install the latest version of Python:
+
+```
+$ pyenv install 3.6.3
+```
+
+*Note: you should have everything you need installed from the apt install instructions I gave at the beginning but if there's still something not installing properly, look up the error on Google and see if you can get it fixed. It should be simple to figure out and resolve. If you can't, then ask for help.*
+
+Now that we've got it installed, let's set the Python interpreter to use 3.6.3:
+
+```
+$ pyenv global 3.6.3
+```
+
+To verify, run Python to make sure you're using the 3.6.3 version. You should see something like the following:
+
+```
+$ python
+
+Python 3.6.3 (default, Oct  9 2017, 13:40:54) 
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+```
+
+Ok, now it's time to put pyenv into action by creating a project structure. Feel free to create these directories wherever you need to but just be aware of the structure:
+
+```
+$ mkdir projects
+$ cd projects
+$ mkdir project1
+```
+
+We'll create a virtual environment manually here and tell pyenv to use this environment any time we go into the project directory:
+
+```
+$ pyenv virtualenv project1
+$ pyenv local project1
+```
+
+Notice now that (project1) shows to the left of the prompt. This helps us know which environment we're working in:
+
+```
+(project1) hseritt@ubuntu:~/projects/project1$ 
+```
+
+Notice that the environment "deactivates" and the environment name (project1) no longer shows in the prompt if you change to a directory outside of the project's structure.
+
+Be aware also that pyenv installed a pip instance just for this virtal environment (project1). We can install packages with pip which will only apply to this particular project:
+
+```
+$ pip install django
+```
+
+We can use pip freeze to show which packages have been installed:
+
+```
+$ pip freeze
+Django==1.11.6
+pytz==2017.2
+```
+
+You can get the names and versions of packages from pip and output them to a file. You can create a requirements file using pip freeze:
+
+```
+$ pip freeze > requirements.txt
+```
+
+The requirements.txt file comes in handy should we set up our project on a different server. We can then use that system's pip to install the packages and correct versions.
+
+```
+$ pip install -r requirements.txt
+```
+
+Here's the downside though of using pyenv and the requirements.txt file. Managing the file itself can be somewhat problematic. Any time you modify the package list for a project with pip, you'll have to remember to do pip freeze > requirements.txt. As you can imagine, this becomes something of a hassle.
+
+There is another Python package tool we can use here to manage dependencies called pipenv (from [@KennethReitz](https://twitter.com/kennethreitz)). While pyenv excels in downloading and managing Python versions, pipenv excels in package management and can handle virtual environments as well. It can even make use of pyenv to get Python versions installed and registered.
+
+So, let's go over how we would use pipenv to manage a project. For now, let's deactivate the project1 virtualenv and go back to using the system's Python version.
+
+```
+$ cd
+$ pyenv global system
+```
+
+In case you don't have Python or Python-Pip installed in your regular system environment, you may need to do this:
+
+```
+$ sudo apt install python python-pip
+```
+
+Now, with pip, let's install pipenv:
+
+```
+$ pip3 install pipenv
+```
+
+And in the the projects directory, we'll create another project directory called project2:
+
+```
+$ cd project2
+$ pipenv --python 3.6.2
+Warning: Python 3.6.2 was not found on your system…
+Would you like us to install CPython 3.6.2 with pyenv? [Y/n]: y
+```
+
+If you have pyenv, you'll notice that pipenv gets pyenv to install the Python version required for the project. These two work very well in harmony. Note that running pipenv --python VERSION also creates a unique virtualenv that we don't have to create manually like we did with pyenv.
+
+Using pipenv, let's install Django:
+
+```
+$ pipenv install django
+```
+
+That looks familiar and works very much the same way as it worked with pyenv except that if you look in the project directory, you'll note that the Pipfile and Pipfile.lock files have been created. Looking inside the Pipfile you see:
+
+```
+$ cat Pipfile
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+
+[packages]
+django = "*"
+
+[requires]
+python_version = "3.6
+```
+
+So far so good. Unlike pyenv, notice that any time you add a package or modify it using pipenv, these will be reflected in the Pipfile. Using pipenv, we won't have to do something error-prone like remember to add a new package to the requirements.txt file.
+
+Below are a few options that can be used with pipenv. 
+
+For example, we can get info on our virtual environment we just created. This will give us the name of our new virtual environment:
+
+```
+$ pipenv --venv
+/home/hseritt/.local/share/virtualenvs/project2-WT_r-lmW
+```
+
+If you're into visuals (at least for a terminal anyways), the graph option will give you drawn-out look at package dependencies to make it more clear for you:
+
+```
+$ pipenv graph
+Django==1.11.6
+  - pytz [required: Any, installed: 2017.2]
+```
+
+In case you're curious, you can find that virtual environments created by pipenv are located in ~/.virtualenvs. Each virtual environment is created with a random name but remember that the --venv option will give you the information on the virtual environments so you know about them.
+
+Now, you may be wondering, You've now heard of both pyenv and pipenv. You can see that they both have very good functionality and do a decent job of managing dependencies for projects. Pyenv has some stability. Pyenv has been around for a few years. Pipenv is somewhat new. As I mentioned, pipenv has the Pipfile to help you manage dependencies. It is very similar to maven or gradle for Java.
+
+Not that I would have to, but if I did have to only pick one, pipenv looks to me to be the most favorable as it's the closest professional-looking attempt thus far to standardize package mangement for Python projects. This is something that has been sorely needed for Python. Just don't forget that you'll need pyenv to install and keep up with installations of different Python versions on your system.
+
+So, what to do? I say install both. Let pyenv do what it does best: manage different versions of Python regardless of projects and let pipenv handle package management for your project. I don't think you can go wrong with that combination. I will certainly be using both for all my projects going forward.
+
+
+
+
+
+Gotchas:
+
+If you run pyenv commands and then see this error:
+
+hseritt@ubuntu:~$ pyenv versions
+Warning: no Python detected on the system
+
+You'll need to install Python:
+
+. sudo apt install python
+
+
+
+If you see this error:
+
+BUILD FAILED (Ubuntu 16.04 using python-build 20160602)
+
+Inspect or clean up the working tree at /tmp/python-build.20171009115755.4243
+Results logged to /tmp/python-build.20171009115755.4243.log
+
+Last 10 log lines:
+checking for --with-universal-archs... no
+checking MACHDEP... linux
+checking for --without-gcc... no
+checking for --with-icc... no
+checking for gcc... no
+checking for cc... no
+checking for cl.exe... no
+configure: error: in `/tmp/python-build.20171009115755.4243/Python-3.6.3':
+configure: error: no acceptable C compiler found in $PATH
+See `config.log' for more details
+
+Install Development Tools:
+
+$ sudo apt install build-essential
+
+
+zipimport.ZipImportError: can't decompress data; zlib not available
+Makefile:1079: recipe for target 'install' failed
+make: *** [install] Error 1
+
+$ sudo apt install zlib1g-dev
+
+
+WARNING: The Python bz2 extension was not compiled. Missing the bzip2 lib?
+WARNING: The Python readline extension was not compiled. Missing the GNU readline lib?
+ERROR: The Python ssl extension was not compiled. Missing the OpenSSL lib?
+
+sudo apt get install libbz2-dev
+sudo apt install lib64readline6-dev
+sudo apt install libssl-dev
+sudo apt install libreadline-dev
+sudo apt install libsqlite3-dev
+
+
+
+sudo apt get install libbz2-dev lib64readline6-dev libssl-dev libreadline-dev libsqlite3-dev zlib1g-dev build-essential
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

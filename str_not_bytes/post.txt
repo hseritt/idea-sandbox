@@ -1,0 +1,96 @@
+
+I talk a good bit about CMIS (Apache Chemistry) and Python on this site. In case you're not familiar, CMIS (Content Management Interoperability Services) is an OASIS standard enabling information sharing between different Content Management Systems. It can be used with a number of different CMS (or ECM if you prefer) platforms. One of these, Alfresco, is open source and therefore naturally supports CMIS. The library, "cmislib" is a Python module and allows one to write Python code to interact with Alfresco's repository.
+
+One of the problems I see with cmislib for the moment is the fact that it only supports Python 2.7.x. That's been fine for a number of years but now Guido van Rossum (Python's BDFL) says there will only be bug fixes going forward until 2020 when support for 2.7.x and older will be dropped. I've been lately having a look through the CMIS library for Python (cmislib) and trying get an idea of the work it would take to move this into compatibility for Python 3. Happily, I'm finding it won't take a lot.
+
+The cmislib module seems to take advantage of a lot of reads where strings are expected but Python 3 is reporting a byte type instead. I probably should use some cmislib code as an example but want to make this very simple to read and understand.
+
+Consider this code. All we're doing here is using subprocess to run an "ls -al" on a POSIX system (mine is Mac OS X but would be the same of course on any other *NIX system):
+
+#!/usr/bin/env python
+
+import subprocess
+import sys
+
+if __name__ == '__main__':
+
+	p = subprocess.Popen(
+	    ["ls", "-al"],
+	    stdout = subprocess.PIPE,
+	    stderr= subprocess.PIPE
+	) 
+
+	while True:
+	    nextline = p.stdout.readline()
+	    if not nextline and p.poll() is not None:
+	        break
+	    sys.stdout.write(nextline)
+	    sys.stdout.flush()
+
+	output = p.communicate()[0]
+	print(output)
+	exit_code = p.returncode
+
+If you run this with Python 2.7.13, you won't get an error (most of the time) or at least on many systems this should run with no issues. You should be able to see a string representation of a long and "all" listing of your current working directory.
+
+However, if you try running this with Python 3.6.2, you will see this error:
+
+Traceback (most recent call last):
+  File "./problem.py", line 27, in <module>
+    sys.stdout.write(nextline)
+TypeError: write() argument must be str, not bytes
+
+Curiously, these cropped up from a number of tests I was running when using Python 3.x with cmislib. Looking into it further, I found that Python 3 handles strings quite a bit differently than in Python 2.x.
+
+There are now two different types: bytes and string. STDOUT and STDERR now return bytes. Why? Because when you think about it, Python really won't know with surety which encoding the system may be using.
+
+So, there's now builtin support for unicode for strings. If you have worked with Django, you'll remember the way to do a string representation for a model was:
+
+def __unicode__(self):
+	return self.my_key
+
+and now, it's done:
+
+def __str__(self):
+	return self.my_key
+
+but back to the issue. How do we solve this problem? Well, it's possible to convert either strings to bytes or bytes to strings. These can be done rather easily:
+
+my_bytes = bytes('€cho', 'utf-8');
+
+and
+
+my_string = b'\xe2\x82\xaccho'.decode('utf-8')
+
+So, to solve this problem we can simply do:
+
+#!/usr/bin/env python
+
+import subprocess
+import sys
+
+
+if __name__ == '__main__':
+
+	p = subprocess.Popen(
+	    ["ls", "-al"],
+	    stdout = subprocess.PIPE,
+	    stderr= subprocess.PIPE
+	) 
+
+	while True:
+	    line = p.stdout.readline()
+	    if line == b'' and p.poll() is not None:
+	        break
+	    
+	    sys.stdout.write(line.decode('utf-8'))
+
+	    # or
+		# sys.stdout.write(line.decode(sys.stdout.encoding))
+
+	    sys.stdout.flush()
+
+	output = p.communicate()[0]
+	print(output)
+
+You should now be able to run this code with Python 3 and it should work as expected.

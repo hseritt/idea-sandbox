@@ -1,0 +1,309 @@
+
+collections.deque
+
+https://docs.python.org/3/library/collections.html#collections.deque
+
+https://pymotw.com/2/collections/deque.html
+
+use cases:
+
+https://softwareengineering.stackexchange.com/questions/147667/where-would-i-typically-use-a-deque-in-production-software
+
+A deque object is similar to a stack or a queue and is initialized left-to-right from an iterable value (or empty). In case you're wondering, deque is pronounced "deck" and is short for a double-ended queue. 
+
+Deques are thread-safe and memory efficient. They can be appended, extended or "popped" from either side. The performance when performing these operations from one side to the next is roughly the same. Lists of course are faster since they are immutable but deques are slightly faster than standard tuples. 
+
+If you don't specify a size (using maxlen or the 2nd positional argument of deque()), deques can be as large as you want them to be. If you do specify a size, you can still use add and delete operations but when one side is added, the other side loses an element. I'll show some example below to give you an idea of how that works.
+
+Some use cases might be for tracking transactions or other kinds of data where there is a focus on the most recent activity.
+
+If maxlen is not specified or is None, deques may grow to an arbitrary length. Otherwise, the deque is bounded to the specified maximum length. Once a bounded length deque is full, when new items are added, a corresponding number of items are discarded from the opposite end. Bounded length deques provide functionality similar to the tail filter in Unix. They are also useful for tracking transactions and other pools of data where only the most recent activity is of interest.
+
+A complex example where a deque could be used is from something called an A-Steal job scheduling algorithm. 
+
+This algorithm implements task scheduling for several processors (though it could be as few as two in number). A separate deque with threads to be executed is handled for each processor. 
+
+To execute each subsequent thread, the processor gets the first element from the deque. If the current thread forks, the thread is put back to the front of the deque and a new thread is executed. 
+
+When any one of the processors finishes execution of its own threads where its deque has been cleared, it can then take a thread from another processor. Eventually, it will get the last element from the deque of another processor and execute it until all deques are cleared (though usually with a processor, the work is continuous and more efficient due to the algorithm).
+
+No worries though, we will just go through some simple examples from the Python interpreter.
+
+The datatype "deque" comes from the collections package. So we need to import it from there:
+
+```python
+>>> from collections import deque
+```
+
+Much like the namedtuple type, we can give it a string and it will be extended into an array-like structure like so:
+
+```python
+>>> my_deque = deque('long')
+
+>>> print(type(my_deque))
+<class 'collections.deque'>
+
+>>> print(my_deque)
+deque(['l', 'o', 'n', 'g'])
+```
+
+
+If we want to add to the right, we can use append() just like you would with a normal tuple:
+
+```python
+>>> my_deque.append('d')
+```
+
+We can also add to the left side with appendleft():
+
+```python
+>>> my_deque.appendleft('s') 
+```
+
+and continue on from there:
+
+```python
+>>> my_deque.append('e')
+
+>>> my_deque.appendleft('i')
+
+>>> my_deque.append('q')
+
+>>> my_deque.appendleft('h')
+
+>>> my_deque.append('u')
+
+>>> my_deque.appendleft('t')
+
+>>> my_deque.append('e')
+
+>>> print(my_deque)
+deque(['t', 'h', 'i', 's', 'l', 'o', 'n', 'g', 'd', 'e', 'q', 'u', 'e'])
+```
+
+We can also make shallow copies with the copy() method:
+
+```python
+>>> deque_copy = my_deque.copy()
+
+>>> print(deque_copy)
+deque(['t', 'h', 'i', 's', 'l', 'o', 'n', 'g', 'd', 'e', 'q', 'u', 'e'])
+```
+
+We can then clear them from all elements by using clear():
+
+```python
+>>> deque_copy.clear()
+
+>>> print(deque_copy)
+deque([])
+```
+
+To get a count of existing elements we can use count() with a string value of the element itself:
+
+```python
+>>> print(my_deque.count('e'))
+2
+```
+
+Just like a tuple we can also extend it with more strings which will be converted into deque elements. This will be added to the right similar to how append() worked:
+
+```python
+>>> deque_copy = my_deque.copy()
+
+>>> deque_copy.extend('right')
+
+>>> print(deque_copy)
+deque(['t', 'h', 'i', 's', 'l', 'o', 'n', 'g', 'd', 'e', 'q', 'u', 'e', 'r', 'i', 'g', 'h', 't'])
+```
+
+As you guessed -- if there's an appendleft(), then there's an extendleft() which works similarly:
+
+```python
+>>> deque_copy.extendleft('left')
+
+>>> print(deque_copy)
+deque(['t', 'f', 'e', 'l', 't', 'h', 'i', 's', 'l', 'o', 'n', 'g', 'd', 'e', 'q', 'u', 'e', 'r', 'i', 'g', 'h', 't'])
+```
+
+If we're looking for an 'o' in our deque, we can find it with index() by position number:
+
+```python
+>>> print(deque_copy.index('o'))
+9
+```
+
+However, if we give it a value that does not exist, it will throw a value error:
+
+```python
+>>> try:
+...     print(deque_copy.index('b'))
+... except ValueError as err:
+...     print(repr(err))
+... 
+ValueError("'b' is not in deque",)
+```
+
+We can also insert an element in any position (provided that a maxlen value wasn't given when the deque was first initialized):
+
+```python
+>>> print(deque_copy)
+deque(['t', 'f', 'e', 'l', 't', 'h', 'i', 's', 'l', 'o', 'n', 'g', 'd', 'e', 'q', 'u', 'e', 'r', 'i', 'g', 'h', 't'])
+
+>>> deque_copy.insert(5, 'z')
+
+>>> print(deque_copy)
+deque(['t', 'f', 'e', 'l', 't', 'z', 'h', 'i', 's', 'l', 'o', 'n', 'g', 'd', 'e', 'q', 'u', 'e', 'r', 'i', 'g', 'h', 't'])
+```
+
+Of course, len() works to get us the size of deque like it does for any other Python iterable:
+
+```python
+>>> print(len(deque_copy))
+23
+```
+
+If we happen to attempt an insert on an unlimited length deque, it will just add to the end:
+
+```python
+>>> deque_copy.insert(50, 'X')
+>>> print(deque_copy)
+deque(['t', 'f', 'e', 'l', 't', 'z', 'h', 'i', 's', 'l', 'o', 'n', 'g', 'd', 'e', 'q', 'u', 'e', 'r', 'i', 'g', 'h', 't', 'X'])
+```
+
+Let's make a limited size deque to show the difference in behavior. Here is one that just has 5 positions. You can't add to it beyond 5 elements.
+
+```python
+>>> new_deque = deque('abcde', 5)
+>>> print(new_deque)
+deque(['a', 'b', 'c', 'd', 'e'], maxlen=5)
+```
+
+You can append to it without issue but note that the first position's element is no longer there after using append():
+ 
+```python
+>>> new_deque.append('f')
+>>> print(new_deque)
+deque(['b', 'c', 'd', 'e', 'f'], maxlen=5)
+```
+
+If you do an appendleft(), the last position's value is gone. In this example, the 'f' is no longer in the deque.
+ 
+```python
+>>> new_deque.appendleft('a')
+>>> print(new_deque)
+deque(['a', 'b', 'c', 'd', 'e'], maxlen=5)
+```
+
+Of course, pop() works as you might expect it to. It simply returns the last element and removes it from the deque:
+
+```python
+>>> popped = new_deque.pop()
+>>> print(popped)
+e
+>>> print(new_deque)
+deque(['a', 'b', 'c', 'd'], maxlen=5)
+```
+ 
+There is also popleft() which does the same but at the front of the deque:
+
+```python
+>>> popped = new_deque.popleft()
+>>> print(popped)
+a
+>>> print(new_deque)
+deque(['b', 'c', 'd'], maxlen=5)
+```
+
+We can of course, remove an element by value just like you can with a tuple:
+
+```python
+>>> new_deque.remove('c')
+>>> print(new_deque)
+deque(['b', 'd'], maxlen=5)
+```
+
+But if you try to remove an element by a value that does not exist, remove() will throw a ValueError:
+
+```python
+>>> try:
+...     new_deque.remove('a')
+... except ValueError as err:
+...     print(repr(err))
+... 
+ValueError('deque.remove(x): x not in deque',)
+```
+
+There are some other convenience methods like reverse():
+
+```python
+>>> new_deque = deque('abcde')
+>>> print(new_deque)
+deque(['a', 'b', 'c', 'd', 'e'])
+>>> new_deque.reverse()
+>>> print(new_deque)
+deque(['e', 'd', 'c', 'b', 'a'])
+
+>>> new_deque.reverse()
+```
+
+And rotate. Here the option (n) means each element gets moved to the right n number of times. Keep in mind that a negative n (-n) moves the elements to the left:
+ 
+```python
+>>> for i in range(len(new_deque)):
+...     new_deque.rotate(1)
+...     print(new_deque)
+... 
+deque(['e', 'a', 'b', 'c', 'd'])
+deque(['d', 'e', 'a', 'b', 'c'])
+deque(['c', 'd', 'e', 'a', 'b'])
+deque(['b', 'c', 'd', 'e', 'a'])
+deque(['a', 'b', 'c', 'd', 'e'])
+```
+
+There is one attribute we can reference: maxlen
+
+```python
+>>> limited_deque = deque('abcde', 5)
+>>> print(limited_deque.maxlen)
+5
+>>> print(new_deque.maxlen)
+None
+```
+
+If a deque is not set to have a maxlen on initialization, then maxlen is None.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

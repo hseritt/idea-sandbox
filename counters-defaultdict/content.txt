@@ -1,0 +1,111 @@
+
+
+
+
+
+The Counter object is available for quick and easy calculations based on a list of objects and their counts.
+
+Python's Counter object is an unordered collection where items are stored as keys and their counts are stored values in a dictionary. Counter values can be of any integer type. You can use zero or negative numbers.
+
+A Counter object can be useful when given a list of strings. When initialized as Counter(word_list) it will count the number of invidual strings and assign the count of their occurences as the value with the word as the key. For example, we can break down the gettysburg_address file into a list of words like so:
+
+```
+>>> from collections import Counter
+ 
+>>> my_file = 'gettysburg_address.txt'
+ 
+>>> words = [ word.lower() for word in open(my_file, 'r').read().split() if '-' not in word ]
+ 
+>>> word_counter = Counter(words)
+
+>>> for k, v in word_counter.items():
+...     print(k, v)
+... 
+four 1
+score 1
+and 6
+seven 1
+years 1
+ago 1
+our 2
+fathers 1
+...
+```
+
+Note: you can find the Gettysburg Address (or any other kind of speech or document) as a text file in many places online.
+
+When I worked at IBM in ELearning, I had to write a script based on an Apache log file that showed the actual file names and types requested (these were in mp3, avi and wav format) and then had to count the number of requests from each one and output that to a web page. Now, this is a fairly simple requirement and it was fairly simple to do with either Java or Python. I just had to write a few functions to do the work but if there had been Counter() objects then, it would have made this an extremely trivial task especially with the most_common() method. This will effectively sort the structure with the most occurences showing at the top. For example, here is a top 10 listing of most common words in the Gettysburg Address speech:
+
+```
+for each in word_counter.most_common()[:10]:
+	k, v = each
+	print('Word: {} | {}'.format(k, v))
+```
+
+Now, if you try to get a count of an element that is not in the object, there won't be an exception raised and the count will print as zero.
+
+```
+c = Counter('abcd')
+print(c['e'])
+```
+
+We can also assign elements with a number to start off with if we want to:
+
+```
+c = Counter(a=1, b=2, c=3, d=4, e=5)
+print('Count is {}'.format(c))
+
+Count is 0
+```
+
+If you need to print out all elements, we can call the elements() method which returns as an iterator:
+
+```
+elements = c.elements()
+for element in elements:
+	print(element)
+
+a
+b
+b
+c
+c
+c
+d
+d
+d
+d
+e
+e
+e
+e
+e
+```
+
+We can also use a subtract() method to do subtraction operations on a Counter as well. We just need to define another Counter object and we can do this:
+
+```
+d = Counter(a=0, b=1, c=2, d=3, e=4)
+c.subtract(d)
+print(c)
+```
+
+Keep in mind that there is no add() method available but you can use either:
+
+```
+sum(c, d)
+
+# or 
+
+c + d
+```
+
+The next time you ever need to do quick tallies on string occurences, using the Counter object will save you a lot of time.
+
+
+
+
+
+
+
+

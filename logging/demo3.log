@@ -1,0 +1,5 @@
+%(asctime)s %(levelname)s:%(module)s.%(name)s.%(funcName)s: %(message)s
+%(asctime)s %(levelname)s:%(module)s.%(name)s.%(funcName)s: %(message)s
+%(asctime)s %(levelname)s:%(module)s.%(name)s.%(funcName)s: %(message)s
+%(asctime)s %(levelname)s:%(module)s.%(name)s.%(funcName)s: %(message)s
+%(asctime)s %(levelname)s:%(module)s.%(name)s.%(funcName)s: %(message)s

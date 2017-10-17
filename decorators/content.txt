@@ -1,0 +1,170 @@
+I'm not sure if you've ever noticed but I've found Python decorators are a very tough subject to understand. This is especially true if you are completely new to them. If you do a search for a simple explanation of Python decorators you will find a lot of articles on the subject but most explanations I have found to be very difficult to understand. Usually if something's difficult to understand, it's probably a lot harder to explain. 
+
+Just be aware, it will generally take you a few times to go through any explanations of decorators no matter how eloquent, until you understand them very well. 
+
+For me, it was difficult to understand arrays in C++ when I was in school but after working with them over and over, they made sense to me and they became a piece of cake to understand. So it is with decorators.
+
+My goal here though is to give you a couple of examples. Luckily for you, I won't go into much detail on them like theory, internals and edgy use cases. For me personally, I tend to learn best when someone just shows me an example. Once I have that example, I can generally wrap my head around it and understand it well enough to apply it to a few different scenarios. 
+
+Once you understand this better from applying these examples, perhaps you can go have a look at all the different sites out there that go into much deeper detail. 
+
+So, let's have a look at demo1.py. This is a very simple Decorator example. Let's imagine that we have a function called addnums() that will take two integers, add them together and return the sum.
+
+Note that we have addnums() defined as such:
+
+```python
+def addnums(num1, num2):
+    return num1 + num2
+```
+
+If we do this:
+
+```python
+addnums(3, 5)
+```
+
+We can expect our return to be 8.
+
+Let's say we want add a multiplier and return a double of 8 -- 16, then we could do something like this:
+
+```python
+def addnums(num1, num2):
+	return (num1 + num2) * 2
+```
+
+If we did that though, we obviously would have to make some changes to the addnum() function itself. What if we wanted to keep this function intact because after all it might be useful to just do sums and only change its behavior enough to do the muliplication? Well, decorators can help us to add some extra code defined in another function that can do some work with the original function (addnums) without modifying it. Simple right? Probably not, but that's ok.
+
+Let me give an exmaple of how we can do this and you can decide how simple it is for yourself. As we add to our code, we're going to keep our function addnums() intact but we will put a decorator above it:
+
+```python
+@multiply
+def addnums(num1, num2, multiplier=2):
+	return (num1 + num2) * multiplier
+```
+
+This looks Pythonic enough to me but obviously this doesn't do everything we need. We will need to create another function above it called multiply():
+
+```python
+def multiply(func):
+    def wrapper(num1, num2):
+        print('Before ...')
+        print('Calculating ...')
+        d = func(num1, num2) * 2
+        print('After ...')
+        return d
+
+    return wrapper
+
+@multiply
+def addnums(num1, num2):
+    return num1 + num2
+```
+
+As you can tell from the code above, we created a function called multiply and passed a function parameter to it called "func". The function being passed by default will be the addnums function.
+
+We then created an internal function called wrapper that takes our parameters from addnums: num1 and num2.
+
+Now, inside the wrapper function, we called addnums (by name of func) with num1 and num2 as parameters and then multiply them by 2 and return the result. So, if you put this into a file (demo1.py) like so and run it:
+
+```python
+#!/usr/bin/env python
+
+def multiply(func):
+    def wrapper(num1, num2):
+        print('Before ...')
+        print('Calculating ...')
+        d = func(num1, num2) * 2
+        print('After ...')
+        return d
+
+    return wrapper
+
+@multiply
+def addnums(num1, num2):
+    return num1 + num2
+
+
+if __name__ == '__main__':
+    print(addnums(3, 5))
+```
+
+Your output will show up like this:
+
+```
+Before ...
+Calculating ...
+After ...
+16
+```
+
+We've doubled our 3 and 5 sum and have 16. Simple enough right? Still, probably not. So you may want to go through this line by line until it makes sense. You'll really learn it better when you can think of a similar use case using different parameters and different functions that you can apply this to. 
+
+Ok, one more example and this will be enough for now.
+
+Now, let's say we want to be able to give this set of functions an arbitrary number to use as a multiplier. Multiplying by 2 is great but what if we want to multiply by 3 or 4 or some other number such that our addnums function with the multiplier decorator looks something like this:
+
+```python
+@multiply(3)
+def addnums(num1, num2):
+    return num1 + num2
+```
+
+The idea with @multiply(3) is that now we're expecting to see an output of 24 which is of course, 8 * 3. How do we write the multiply function for this situation? It's going to be a little different.
+
+```python
+def multiply(multiplier=2):
+    def decorator(func):
+        def wrapper(num1, num2):
+            print('Before ...')
+            print('Calculating ...')
+            d = func(num1, num2) * multiplier
+            print('After ...')
+            return d
+            
+        return wrapper
+    return decorator
+```
+
+We're going to now introduce a bit more complexity to the function. This time multiply will take in "multiplier" as a parameter. We can make it optional by setting "multiplier = 2" by default. This way if we only call @multiply() it will at least multiply our sum by 2.
+
+So, to complete this new decorator with arbitrary multiplier functionality, we'll then create an other inner function called decorator and pass in the func (which is still addnum). We'll keep the same wrapper function except that intead of using "* 2", we'll now use the multiplier variable and still return "d" and return the wrapper.
+
+Note that this time we'll also return the decorator function result as well as this is the result we are looking for. In fact, demo2.py should like this in its entirety:
+
+```python
+#!/usr/bin/env python
+
+def multiply(multiplier=2):
+    def decorator(func):
+        def wrapper(num1, num2):
+            print('Before ...')
+            print('Calculating ...')
+            d = func(num1, num2) * multiplier
+            print('After ...')
+            return d
+            
+        return wrapper
+    return decorator
+
+@multiply(3)
+def addnums(num1, num2):
+    return num1 + num2
+
+
+if __name__ == '__main__':
+    print(addnums(3, 5))
+
+```
+
+If you run it, your output should be:
+
+```
+Before ...
+Calculating ...
+After ...
+24
+```
+
+Simple right? Easy right? Probably still not but I can tell you again, that if you go through this a number of times and then write your own decorators for some imaginary cases, it will begin to come to you. Not many of us can read an abstract explanation on a complex concept (like decorators) and understand it without having tried it. So, never feel bad to look for an example of how something works so that you can at least begin to wrap your head around it. Examples are not cheating in my book. And if it is, so what?
+
+Hope this was helpful.

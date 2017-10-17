@@ -1,0 +1,5 @@
+2017-10-03 10:46:44,997 DEBUG:demo2.LogDemo.run: This is a debug message. Just some developer info.
+2017-10-03 10:46:44,997 INFO:demo2.LogDemo.run: This is an info message. Just some general info.
+2017-10-03 10:46:44,997 WARNING:demo2.LogDemo.run: This is a warning message. Just to make you aware of a potential problem.
+2017-10-03 10:46:44,997 ERROR:demo2.LogDemo.run: This is an error message. You app won't work correctly if you don't fix this.
+2017-10-03 10:46:44,997 CRITICAL:demo2.LogDemo.run: This is a critical message. Your app won't start if you don't fix this.

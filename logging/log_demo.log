@@ -1,0 +1,5 @@
+2017-10-03 17:26:53,429  [DEBUG]  [log_demo.__main__.run]:23  Debug message.
+2017-10-03 17:26:53,429  [INFO]  [log_demo.__main__.run]:24  Info message.
+2017-10-03 17:26:53,429  [WARNING]  [log_demo.__main__.run]:25  Warning message.
+2017-10-03 17:26:53,429  [ERROR]  [log_demo.__main__.run]:26  Error message.
+2017-10-03 17:26:53,429  [CRITICAL]  [log_demo.__main__.run]:27  Critical message.

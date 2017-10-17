@@ -1,0 +1,27 @@
+Problem
+
+Python 3 handles strings differently.
+
+2 different types:
+
+Byte
+
+Str
+
+In Python 3 doing a read from stdout and stdin for subprocess now has been changed from str to byte. Python has no way of knowing which type of encoding is being passed.
+
+Possible to convert str to bytes and bytes to str.
+
+The str of old is not backward compatible any longer
+
+Explicitly defining unicode types is now the way to go.
+
+String now supports unicode.
+
+Example - Django using __str__ instead of __unicode__ when using Python 3.
+
+
+
+
+
+

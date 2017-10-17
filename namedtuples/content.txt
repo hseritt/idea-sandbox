@@ -1,0 +1,92 @@
+
+Python: Namedtuples
+
+Namedtuples are tuples turned into convenient containers for simple tasks. The standard tuple will only have integer indexes for accessing individual members. For example:
+
+```python
+>>> trees = ["pecan", "oak", "hickory"]
+```
+
+To access these individually, I would need to do:
+
+```python
+>>> trees[1]
+ "oak"
+```
+
+Namedtuples are tuples that give you the ability to access them with a key or attribute:
+
+```python
+>>> Tree = namedtuple('Tree', 'type example height')
+>>> tree = Tree("evergreen", "pine", "tall")
+>>> tree.type
+ "evergreen"
+>>> tree.example
+ "pine"
+>>> tree.height
+ "tall"
+ ```
+
+Namedtuples come from Python's collection module. The collections module implements special container types that provide alternatives to Python’s built-in containers like dict, list, set, and tuple. The namedtuple object was introduced in Python 2.6.
+
+Let's have a look at an example:
+
+```python
+#!/usr/bin/env python
+
+from collections import namedtuple
+
+Person = namedtuple('Person', 'name age hair_color')
+me = Person('Harlin', 48, 'brown')
+
+print(me.name, me.age, me.hair_color)
+
+john = Person('John', 25, 'black')
+print(john.name, john.age, john.hair_color)
+```
+
+As mentioned, namedtuple is imported from the collections module.
+
+We can create a namedtuple called "Person". The first argument is the name of the namedtuple. The next string is a space delimited list of attributes or keys like you would use for a dictionary.
+
+You can create one using values for each of the keys. Note that you can use either optional arguments or standard ones.
+
+One use case I can think of right off the top of my head is parsing a text file of comma-delimited values. For example, I have this text file of city, state and zipcode of places I have lived in a file called places.txt:
+
+```
+Atlanta,GA,30337
+Lawrenceville,GA,30044
+Colorado Springs,CO,80918
+Stockbridge,GA,30281
+Jacksonville,NC,28540
+Chickasaw,AL,36611
+Prichard,AL,36610
+Slidell,AL,70458
+Birmingham,AL,35005
+```
+
+I can use the following code to import the file, extract the values and assign them to a namedtuple called Place like so:
+
+```python
+Place = namedtuple(
+    'Place', 'city state zipcode'
+)
+
+places = []
+
+for line in open('places.txt', 'r').readlines():
+    city, state, zipcode = [
+        item for item in line.rstrip().split(',')
+    ]
+
+    places.append(Place(city, state, zipcode))
+
+for place in places:
+    print(place)
+```
+
+These can be used to create very simple classes quickly and easily.
+
+A namedtuple is very similar to a dictionary but it is more lightweight and requires no more memory than a regular tuple and is faster than a dictionary.
+
+Using these gives meaning of a position in a tuple and will allow you to code more Pythonically: better readability and better self-documenting code. Where it isn't obvious in a tuple, it should probably be used in replacement of it.

@@ -1,0 +1,217 @@
+
+Python - Args!!! & Kwargs!!! Oh My!!! and Understanding How to Use Them
+
+Have you ever looked at Python code that included *args and **kwargs and wondered what in the world these things are? Python is supposed to be quickly readable to someone either new to programming or someone coming from another programming language. These look weird. What gives?
+
+Well, the *args and **kwargs variables commonly seen are arbitrary function parameters. Meaning that they allow your functions to accept dynamic parameters. Which allows you to write more dynamic code that can handle unforeseen needs. Before we go into what these are and how to use them, let's talk about Python function parameter types so we're all on the same page.
+
+Python allows for positional and optional arguments for functions. Likely you know that a positional argument is one that is fixed in place like the ones in this example:
+
+def do_something(name, age):
+	...
+
+Anytime we call do_something() we must pass a variable as name and age:
+
+
+```python
+This works:
+
+do_something('Bill', 30)
+
+This doesn't:
+
+do_something('Bill')
+
+or 
+
+do_something(30)
+
+or 
+
+do_something()
+```
+
+These are fixed and the convention defined in our function must be followed else we'll get an error.
+
+If we want to, we can make the parameters optional (hence the term optional arguments) by doing:
+
+```python
+def do_something(name=None, age=21)
+
+```
+
+Then we can have a few different calls with do_something():
+
+```python
+This is OK:
+
+do_something('Bill') or do_something(name='Bill')
+
+do_something('Bill', 30) or do_something(name='Bill', age=30)
+
+but if you do this:
+
+do_something(30)
+
+in the do_something() function, "name" will be assigned to 30 and not assigned to "age".
+
+You'll need to do this:
+
+do_something(age=30)
+
+```
+
+Position arguments and optional arguments are fine if we know beforehand what our function should expect but what if we need to pass parameters to a function that is designed to handle them but the function doesn't have the parameters built into its signature? What if it would be very tedious to implement? If you're not convinced that optional arguments are a good thing, check this [code](https://github.com/groovy/groovy-core/blob/master/src/main/org/codehaus/groovy/runtime/ArrayUtil.java) out.
+
+Let's imagine we want to create an add numbers function like so:
+
+```python
+def add_nums(num1, num2):
+	return sum(num1, num2)
+```
+
+This is fine if we only want to add 2 numbers. But, what if a user wants to arbitrarily add 3 or more numbers? In a language like Java, we would have had to use something called an overloaded method (though, in Java 8 you can now use optional parameters!). We would have had to create something similar to:
+
+```python
+def add_nums(num1, num2):
+	return sum(num1, num2)
+
+def add_nums(num1, num2, num3):
+	return sum(num1, num2, num3)
+
+and so on ...
+```
+
+Instead with *args, we can do this:
+
+```python
+def add_nums(*args):
+	return sum(args)
+
+add_nums(1, 3)
+add_nums(1, 3, 5)
+add_nums(1, 3, 5, 7)
+
+and so on ...
+```
+
+This allows for more flexibility. But, note that *args only allows for positional arguments. For example, we can't do this:
+
+```python
+def add_nums(*args):
+	return sum(args)
+
+add_nums(num1=1, num2=3)
+```
+
+We would see an error like this:
+
+```
+TypeError: add_nums() got an unexpected keyword argument 'num1'
+```
+
+In order to accomodate arbitrary optional parameters, we can use *args' cousin, **kwargs.
+
+```python
+def get_full_name(**kwargs):
+	full_name = []
+	for k, v in kwargs.items():
+		full_name.append(kwargs[k])
+	return ' '.join(full_name)
+
+get_full_name(first_name='Ricky', middle_name='Bobby', last_name='Jones')
+```
+
+This of course will return 'Ricky Bobby Jones'. Note that our function did not have to know anything about first_name, middle_name or last_name as far as having those variables set in the function scope.
+
+This can also be useful if for example, get_full_name() was a decorator or other wrapper function and needed to pass the first_name, middle_name or last_name to another function that *does* need to know what those variables are.
+
+In case you're wondering, note that *args and **kwargs parameters can be called anything. We could use *arguments or **kwarguments or any other name. It is the asterisk(s) that make them what they are in the context of a function signature. But, for simplicity and readability sake, you should stick to using args and kwargs.
+
+To more fully wrap your head around what these are, consider running these in your Python interpreter:
+
+```python
+#!/usr/bin/env python
+
+def do_something_with_args(*args):
+    print(args)
+    print(type(args))
+
+    print(*args)
+
+    return sum(args)
+
+
+if __name__ == '__main__':
+
+    print(do_something_with_args(1, 3, 7))
+
+# The output will be:
+
+(1, 3, 7)       <- Printed as a tuple
+<class 'tuple'> <- Because it is a tuple
+1 3 7           <- Printed as a string
+11
+```
+
+Note that *args is a tuple type. But with the single asterisk in front, do_something_with_args() sees it as a string variable but gets converted to a tuple when addressed as 'args'.
+
+Try this for kwargs:
+
+```python
+#!/usr/bin/env python
+
+def do_something_with_kwargs(**kwargs):
+    print(kwargs)
+    print(type(kwargs))
+
+    print(*kwargs)
+
+
+if __name__ == '__main__':
+
+    do_something_with_kwargs(name='Bill', age=30)
+
+# The output will be:
+
+{'name': 'Bill', 'age': 30} <- Printed as a dictionary
+<class 'dict'>              <- Because it is a dictionary
+name age                    <- Printed as a string
+```
+
+You'll see kwargs is very much the same thing as args except that it's a dictionary instead of a tuple.
+
+Writing functions that take *args and **kwargs arguments are great for situations where the argument list will be somewhat small and not be a long stack. These are also good for writing dynamic code where you won't know what the arguments will be beforehand.
+
+I hope this explanation was simple enough so that you can start using and taking advantage of *args and **kwargs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

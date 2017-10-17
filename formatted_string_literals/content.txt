@@ -1,0 +1,107 @@
+
+See https://www.blog.pythonlibrary.org/2017/02/08/new-in-python-formatted-string-literals/
+
+
+By now, you've probably seen one of the guiding principles of the Python programming language when running "import this" in your interpreter.
+
+Python's mantra on ways to get things done in the languge has been: "There should be one-- and preferably only one --obvious way to do it." It's very different than Perl's "... more than one way to do it ..." philosophy. I like things simple. This idea works well for most things especially Python's for loops. One area of Python though that goes a bit differently is string formatting.
+
+There are a number of ways to do string formatting and concatenation.
+
+Here is the most basic way to do this:
+
+```python
+print('Hello ' + 'world!') # This is ok
+```
+
+This will likely work with Python forever. It's a very common idiom in most programming languages. So, this is fine if all we have are strings. What if we introduce the result of a math operation into the string? 
+
+The first line will result in an error:
+
+```python
+print('I have ' + sum(5, 5) + 'apples.') # This will result in an error and requires casting to an int
+
+print('I have ' + str(sum(5, 5)) + 'apples.') # This will work but ...
+```
+
+The cast to str() will work but this will become unmanageable over time. So, it would make more sense to use string formatting and variable substitution.
+
+Here is the old style string substitution. If you look into some older Python 2 code, you can expect to see a lot of this. It's very simple to use:
+
+```python
+print('Christian Ronaldo wears the number %d.' % 7)
+```
+
+While the snippet above is legal and you'll certainly see a lot of it in others' code, you really should use a list. Substitution of %s should be a list type -- even if it's only one argument. This would be more proper:
+
+```python
+my_str = 'This is a %s sentence.' % ('short',)
+print(my_str)
+```
+
+As you can imagine, this is ok to use even still in Python 3. The string format method was introduced a few years back in Python 2.6. The string.format() method is more Pythonic and will probably be more familiar to those who are coming from other C type languages. It's a great middle ground between:
+
+'Arg1: %s and Arg2: %s' % (arg1, arg2)
+
+and the C and Java style printf() formatting:
+
+```c
+printf("Arg1: %s and Arg2: %s", arg1, arg2) 
+```
+
+Here are some string.format() examples. You can use it in a few different ways:
+
+```python
+my_str = 'This is a {} sentence too.'.format('short')
+print(my_str)
+```
+
+You can number the string substitutes in the order you would like for them to be rendered:
+
+```python
+my_str = 'This string has two values to show: {0} and {1}.'.format('short', 'long')
+print(my_str)
+```
+
+You can also switch the ordering:
+
+```python
+my_str = 'We can also rearrange {1} and {0} and keep them ' \
+    'in the same order in the format function.'.format('short', 'long')
+print(my_str)
+```
+
+We don't have to make the arguments positional. We can use named placeholders that correspond to formatted named arguments to make the string substitutions more readable:
+
+```python
+my_str = 'This is {name}. He is {age} years old. He stands {height}'
+print(my_str.format(
+        name='Bob',
+        age=30,
+        height='5 ft 8 inches',
+    )
+)
+```
+
+To make thing even more Pythonic, we can reference dictionaries from our string when things began to get more complex:
+
+```python
+person = {
+    'name': 'Bob',
+    'age': 30,
+    'height': '5 ft 8 inches',
+}
+
+my_str = 'This is {p[name]}. He is {p[age]} years old. He stands {p[height]}'
+print(my_str.format(p=person))
+```
+
+Keep in mind that we can make this even more easy. We can just reference the values of the dictionary itself:
+
+```python
+print(my_str.format(**person))
+```
+
+The newer style string formatting is an effective method to substitute strings and organize values into other strings. The methods that Python provides are very flexible. These will help make your output to be more readable and friendly to your app's user.
+
+

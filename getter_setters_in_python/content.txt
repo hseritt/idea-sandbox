@@ -1,0 +1,120 @@
+https://www.python-course.eu/python3_properties.php
+
+
+
+```java
+public class Thing {
+
+	private int x;
+
+	public Thing(int x) {
+		this.x = x;
+	}
+
+	public int getX() {
+		return this.x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+}
+```
+
+```java
+public class App {
+	public static void main(String[] args) {
+		
+		Thing thing = new Thing(42);
+		System.out.println(thing.x);
+		
+		thing.x = 25;
+		System.out.println(thing.x);
+	}
+}
+```
+
+```java
+public class App {
+	public static void main(String[] args) {
+		
+		Thing thing = new Thing(42);
+		System.out.println(thing.getX());
+
+		thing.setX(25);
+		System.out.println(thing.getX());
+	}
+}
+```
+
+```python
+#!/usr/bin/env python
+
+class Thing(object):
+
+    def __init__(self, x):
+        self.__x = x
+
+    def set_x(self, x):
+        self.__x = x
+
+    def get_x(self):
+        return self.__x
+
+
+if __name__ == '__main__':
+
+    thing = Thing(42)
+    print(thing.get_x())
+
+    thing.set_x(25)
+    print(thing.get_x())
+```
+
+```python
+#!/usr/bin/env python
+
+class Thing(object):
+
+    def __init__(self, x):
+        self.x = x
+
+if __name__ == '__main__':
+
+    thing = Thing(42)
+    print(thing.x)
+
+    thing.x = 25
+    print(thing.x)
+```
+
+```python
+#!/usr/bin/env python
+
+class Thing(object):
+
+    def __init__(self, x):
+        self.__x = x 
+
+    @property
+    def x(self):
+        return self.__x
+
+    # This will only work with a private member.
+    # Otherwise, we will see a recursion error.
+    @x.setter
+    def x(self, x):
+        if x % 2 == 1:
+            x += 1
+        self.__x = x
+
+
+if __name__ == '__main__':
+
+    thing = Thing(42)
+    print(thing.x)
+    
+    thing.x = 25
+    print(thing.x)
+```
