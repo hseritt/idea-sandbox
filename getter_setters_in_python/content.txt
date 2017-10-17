@@ -2,9 +2,9 @@ https://www.python-course.eu/python3_properties.php
 
 Python - Using @property and @x.getter for instance variable data encapsulation
 
-At one point, I felt I understood Python and Java very well and I thought probably equal well. With my job at the time, I went back into thinking in Java. One of the most common practices ever in Java is data encapsulation. From a very basic standpoint, this involves setting your class variables to private and then creating getters and setters for those class variables you need to make externally accessible.
+At one point in the past, I felt I understood Python and Java very well and probably equally well. With my job at the time, I focused a lot more on Java code. As I did that, I went back into "thinking in Java." 
 
-*For frame of reference, be aware also that in Python there are class variables and instance variables. In Python, class variables should be mostly static and hold the same value no matter the instance of the super class while an instance variable can be expected to change between instances.*
+One of the most common practices in Java is data encapsulation. From a very basic standpoint, the idea of data encapsulation involves setting your class variables to private and then creating getters and setters for those class variables you need to make externally accessible for setting and retrieving values.
 
 Consider this class called Thing:
 
@@ -35,7 +35,9 @@ public class App {
 }
 ```
 
-Below is a demo of how you would create getters and setters for a private variable:
+So, is this a good practice to carry over to your Python code? Actually, no. It's really not necessary. Java and Python are still very different from each other with different aims and goals. Be aware that in Python there are class variables and instance variables. In Python, class variables should be mostly static and hold the same value no matter the instance of the super class while an instance variable can be expected to change between instances.
+
+Below is a demo of how you would create getters and setters for a private variable in Java:
 
 ```java
 public class Thing {
@@ -72,7 +74,11 @@ public class App {
 }
 ```
 
-I've seen a lot of Java programmers start writing in Python and then apply the getter and setter idiom to it. Even after writing Python code for about 5 years at the time, I brought with me my Java mentality and made quite a few mistakes. You will tend to see this a lot from Java programmers coming over:
+So, is this a good practice to carry over to your Python code? Actually, no. It's really not necessary. Java and Python are still very different from each other with different aims and goals. Be aware that in Python there are class variables and instance variables. In Python, class variables should be mostly static and hold the same value no matter the instance of the super class while an instance variable can be expected to change between instances.
+
+I've seen a lot of Java programmers start writing in Python and then apply the getter and setter idiom to it. Even after writing Python code for about 5 years at the time, I did the same thing in some of my own projects. I brought with me my Java mentality and made a number of mistakes. 
+
+Still, if we wanted to, we could create getters and setters. For Python, here is how that idiom might look:
 
 ```python
 #!/usr/bin/env python
@@ -98,7 +104,7 @@ if __name__ == '__main__':
     print(thing.get_x())
 ```
 
-It will work of course but it's not very Pythonic and not really necessary. With a public variable called 'x', we can simply access it directly. It works and it's very readable:
+It will work of course but it's not very Pythonic and not really necessary. With a public variable called 'x', we can simply access it directly. This works and what's great about it is that it's very readable:
 
 ```python
 #!/usr/bin/env python
