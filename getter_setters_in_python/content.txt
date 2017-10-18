@@ -2,11 +2,13 @@ https://www.python-course.eu/python3_properties.php
 
 Python - Using @property and @x.getter for instance variable data encapsulation
 
-At one point in the past, I felt I understood Python and Java very well and probably equally well. With my job at the time, I focused a lot more on Java code. As I did that, I went back into "thinking in Java." 
+At one point in the past, I had finally gotten to a point where I felt I understood Python as well as I did Java. I had decided due to my job it was necessary for me to focus more on Java. Naturally, when you go back into working almost 100% in Java, you go back to "thinking in Java." To be truthful, I was still not aware of a lot of idiomatic Pythonic code. This was around 2005-2006. Until you really get fully immersed into Python, you still will fall back on what you know. 
 
-One of the most common practices in Java is data encapsulation. From a very basic standpoint, the idea of data encapsulation involves setting your class variables to private and then creating getters and setters for those class variables you need to make externally accessible for setting and retrieving values.
+As such, in my mind at the time, Java's philosophy on data encapsulation to me was good practice for ALL programming languages. Talk about seeing nails everywhere when all you have is a hammer.
 
-Consider this class called Thing:
+One of the most common practices in Java is data encapsulation. From a very basic standpoint, the idea of data encapsulation in Java involves setting your class variables to private and then creating getters and setters for those class variables you need to make externally accessible for setting and retrieving values. This has become so ingrained into the language that there are a plethora of 3rd party packages where you must use getters and setters (Hibernate and JPA require it!).
+
+To give you a quick example, consider this Java class called Thing:
 
 ```java
 public class Thing {
@@ -20,7 +22,7 @@ public class Thing {
 }
 ```
 
-The App class below with the main method won't be able to access "x". So, the following code will throw and access error when trying to compile:
+Due to "x" being a private class variable, this App class below won't be able to directly access "x". So, the following code will throw an access error when trying to compile:
 
 ```java
 public class App {
@@ -34,8 +36,6 @@ public class App {
 	}
 }
 ```
-
-So, is this a good practice to carry over to your Python code? Actually, no. It's really not necessary. Java and Python are still very different from each other with different aims and goals. Be aware that in Python there are class variables and instance variables. In Python, class variables should be mostly static and hold the same value no matter the instance of the super class while an instance variable can be expected to change between instances.
 
 Below is a demo of how you would create getters and setters for a private variable in Java:
 
@@ -74,11 +74,13 @@ public class App {
 }
 ```
 
-So, is this a good practice to carry over to your Python code? Actually, no. It's really not necessary. Java and Python are still very different from each other with different aims and goals. Be aware that in Python there are class variables and instance variables. In Python, class variables should be mostly static and hold the same value no matter the instance of the super class while an instance variable can be expected to change between instances.
+This will print 42 and 25.
 
-I've seen a lot of Java programmers start writing in Python and then apply the getter and setter idiom to it. Even after writing Python code for about 5 years at the time, I did the same thing in some of my own projects. I brought with me my Java mentality and made a number of mistakes. 
+So, is this a good practice to carry over to your Python code? Actually, no. It's really not necessary. Java and Python are still very different from each other with different aims and goals. Be aware that in Python there are class variables and instance variables. In Python the best practice is that class variables should be mostly static and hold the same value no matter the instance of the super class while an instance variable can be expected to change between instances.
 
-Still, if we wanted to, we could create getters and setters. For Python, here is how that idiom might look:
+I've seen a lot of Java programmers start writing in Python and then apply the getter and setter idiom to it. Even after writing Python code for about 5 years at the time, I did the same thing in some of my own projects. I brought my Java mentality and made a number of mistakes. 
+
+If we wanted to, we could create getters and setters. For Python, here is how that idiom would look:
 
 ```python
 #!/usr/bin/env python
@@ -104,7 +106,7 @@ if __name__ == '__main__':
     print(thing.get_x())
 ```
 
-It will work of course but it's not very Pythonic and not really necessary. With a public variable called 'x', we can simply access it directly. This works and what's great about it is that it's very readable:
+It will work of course but it's not very Pythonic and not necessary. With a public variable called 'x', we can simply access it directly. We can then keep our private variables truly private. This works and what's great about it is that it's very readable:
 
 ```python
 #!/usr/bin/env python
@@ -125,7 +127,7 @@ if __name__ == '__main__':
 
 Still, the data encapsulationists might complain that if you're directly accessing variables, then what about the need to add some functionality on assignment? For instance, what if when we set x, we want to make sure it is an even number or in a certain range or maybe you need to insert some validation code before hand?
 
-Well, the @property and @[var].setter decorator can be applied. Here is the same code essentially from the last code block but here we're assuming that x (or rather __x) is a private variable: 
+Well, if you must allow access to private variables and provide some intermediary functionality, the @property and @[var].setter decorator can be applied. Here is the same code essentially from the last code block but here we're assuming that x (or rather __x) is a private variable: 
 
 ```python
 #!/usr/bin/env python
@@ -157,4 +159,4 @@ if __name__ == '__main__':
     print(thing.x)
 ```
 
-We can add these decorators and still access thing.x directly. This is very handy when you require some data encapsulation around your instance variables.
+We can add these decorators and still access thing.x directly. This is very handy when you require some data encapsulation around your instance variables. Remember that Python is a very mature language and has a lot of its own idioms that are going to be very different than other languages like Java, PHP or Ruby. Hope this helps.
