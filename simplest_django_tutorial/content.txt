@@ -1,0 +1,63 @@
+
+
+Here is the simplest Django tutorial you can ever hope for. The idea is to show you step by step how you can create a very simple ToDo list app.
+
+## 0 - Use Linux
+
+If you don't have a Mac, a Linux (Ubuntu, Fedora or CentOS) box, workstation or laptop, then install VirtualBox. Install Ubuntu on a VirtualBox guest. 
+
+If you're on Windows, download [VirtualBox](http://download.virtualbox.org/virtualbox/5.1.30/VirtualBox-5.1.30-118389-Win.exe) and install it.
+
+Install Ubuntu 16.04 on VirtualBox. You can download Ubuntu 16.04 [here](http://releases.ubuntu.com/16.04/ubuntu-16.04.3-desktop-amd64.iso).
+
+[Instructions for install Ubuntu 16.04 on Windows VirtualBox.](how to install ubuntu 16.04 on a windows virtualbox host)
+
+Are you able to login to your Ubuntu 16.04 guest on VirtualBox? or Mac OS X? or your own Ubuntu 16.04 or CentOS 7 machine? Yes? Then, move on to Step 1.
+
+## 1 - Install the Prerequisites
+
+### 1a. Install necessary packages for Ubuntu:
+
+```
+$ sudo apt update
+$ sudo apt install build-essential
+$ sudo apt install libbz2-dev libssl-dev libreadline-dev libsqlite3-dev zlib1g-dev
+```
+
+or CentOS 7:
+
+```
+$ sudo yum groupinstall 'Development Tools'
+$ sudo yum install bzip2-libs bzip2-devel openssl-libs openssl-devel readline readline-devel sqlite-devel zlib zlib-devel
+
+```
+
+### 1b. Install pyenv
+
+Open a terminal and run:
+
+```
+$ curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
+```
+
+If on Ubuntu, add the following to your ~/.bashrc file and if on Redhat or CentOS, add to your ~/.bash_profile:
+
+```bash
+export PATH="/home/[your username]/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+```
+
+Test the pyenv install by running:
+
+```
+$ pyenv --version
+pyenv 1.1.5
+```
+
+### 1c. Install latest Python version
+
+```
+$ pyenv install 3.6.3 
+
+
