@@ -59,5 +59,170 @@ pyenv 1.1.5
 
 ```
 $ pyenv install 3.6.3 
+Downloading Python-3.6.3.tar.xz...
+-> https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz
+Installing Python-3.6.3...
+Installed Python-3.6.3 to /root/.pyenv/versions/3.6.3
+```
+
+## 2 - Set Up The Todo Project
+
+### 2a. Set up the project folder and environment
+
+```
+$ cd ~
+$ mkdir projects
+$ cd projects
+$ mkdir django-todo
+$ cd django-todo
+$ pyenv global 3.6.3
+```
+
+To make sure we have the right Python interpreter, issue "python" and make sure you see something like the output below:
+
+```
+$ python
+Python 3.6.3 (default, Oct 17 2017, 23:42:57) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-16)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+```
+
+Setting up the rest of the project: 
+
+```
+$ pyenv virtualenv django-todo
+$ pyenv local django-todo
+(django-todo)$ pip install django
+```
+
+Django should now be installed. Don't worry about setting up a database server because for now we will use sqlite3 as our database. By default, your Django project will create a db.sqlite file and write entries to it. This is not for production use however but our goal with this tutorial is to do a very simple set up so that you can start using Django very quickly.
+
+Issue pip freeze and we'll see the packages and versions now installed:
+
+```
+$ pip freeze
+Django==1.11.6
+pytz==2017.2
+```
+
+### 2b. Create our django todo project
+
+```
+$ django-admin startproject todo
+```
+
+Our directory structure (from the projects directory) should now look like:
+
+```
+.
+└── django-todo
+    └── todo
+        ├── manage.py
+        └── todo
+            ├── __init__.py
+            ├── settings.py
+            ├── urls.py
+            └── wsgi.py
+```
+
+## 3 - Build database and Start Django
+
+### 3a. Run migrations and create admin user
+
+```
+$ ./manage.py makemigrations
+No changes detected
+$ ./manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying sessions.0001_initial... OK
+$ ./manage.py createsuperuser
+Username (leave blank to use 'root'): admin
+Email address: admin@localhost
+Password: 
+Password (again): 
+Superuser created successfully.
+```
+
+### 3b. Start Django and Access the Admin Console
+
+If you're doing this from your own laptop or workstation:
+
+```
+$ ./manage.py runserver
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+October 18, 2017 - 04:01:45
+Django version 1.11.6, using settings 'todo.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+```
+
+You should now be able to access your Django site by pointing your browser to http://localhost:8000.
+
+If you're running from a virtual box, run this instead:
+
+```
+$ ./manage.py runserver 0.0.0.0:8000
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+October 18, 2017 - 04:02:19
+Django version 1.11.6, using settings 'todo.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+```
+
+Make a note of your virtual box ip address and point your browser instead to http://<ip address>:8000
+
+You should then see a page that delivers the following message:
+
+```
+It worked!
+Congratulations on your first Django-powered page.
+
+Next, start your first app by running python manage.py startapp [app_label].
+You're seeing this message because you have DEBUG = True in your Django settings file and you haven't configured any URLs. Get to work!
+```
+
+If you see this error message (it means you are likely using a virtualbox guest):
+
+```
+DisallowedHost at /
+Invalid HTTP_HOST header: '192.168.15.17:8000'. You may need to add '192.168.15.17' to ALLOWED_HOSTS.
+```
+
+You will need to open todo/settings.py and change:
+
+```python
+ALLOWED_HOSTS = []
+```
+
+to
+
+```python
+ALLOWED_HOSTS = ['192.168.15.17',] # or to your virtualbox ip address 
+```
+
+
+
 
 
