@@ -50,3 +50,28 @@ Check out Yext - an aggregator
 
 copyscape.org (plagiarism checker?)
 
+
+schema markup
+
+
+Social media - the more the better
+
+how often should i post???
+
+
+AMP (accelerated mobile page) site speed
+
+
+progressive web app (??) converts site to mobile app
+
+
+Naturally earned back links
+
+haro.com - help a reporter out - use you for quotations
+
+add youtube videos and link back to site
+
+nofollows and dofollows - spider bot
+
+
+
