@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <title>ToDo App</title>
+</head>
+<body>
+    <div class="jumbotron text-center">
+      <h1>ToDo's</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+            </div>
+        
+            <div class="col-sm-4">
+                <h3>Tasks List</h3>
+
+                <table>
+                    <tr>
+                        <th>Task</th>
+                        <th>Due?</th>
+                    </tr>
+                    {% for task in task_list %}
+
+                        <tr>
+                            <td>
+                                {{ task.title }}
+                            </td>
+                            <td>
+                                {{ task.due }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+
+                <h3>Add New Task</h3>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <table>
+                        {{ task_form.as_table }}
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="submit" value="Save" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="col-sm-4">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

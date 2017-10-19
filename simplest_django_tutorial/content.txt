@@ -353,9 +353,368 @@ We could just use Django's admin console but it's very limited in what we can do
 
 Go ahead and stop the development server by issuing control-c at the command line.
 
+We'll need a directory to store our html templates so that a page for our tasks can be rendered. Create a subdirectory called 'templates' under tasks directory.
+
+```
+$ mkdir tasks/templates
+```
+
+And now our tasks app structure should look like:
+
+```
+tasks
+├── __init__.py
+├── __pycache__
+├── admin.py
+├── apps.py
+├── migrations
+├── models.py
+├── templates
+├── tests.py
+└── views.py
+```
+
+Now, we're going to create our first view. Open tasks/views.py and add the following:
+
+```python
+"""Views module for the tasks app."""
+from django.shortcuts import render
 
 
+def index(request):
+    return render(
+        request,
+        'tasks_index.html',
+        {}
+    )
+```
 
+Next, create an html file called tasks_index.html inside tasks/templates using the following code:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <title>ToDo App</title>
+</head>
+<body>
+  <div class="jumbotron text-center">
+    <h1>ToDo's</h1>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+      </div>
+      <div class="col-sm-4">
+        <h3>Tasks List</h3>
+      </div>
+      <div class="col-sm-4">
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+```
+
+Now, we need to add a route to our tasks app index page. Open todo/urls.py and make sure you have the following:
+
+```python
+from django.conf.urls import url
+from django.contrib import admin
+from tasks.views import index
+
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(
+      regex=r'^$',
+      view=index,
+      name='tasks_index',
+    ),
+]
+```
+
+Start the development server:
+
+```
+$ ./manage.py runserver
+```
+
+and go to http://localhost:8000.
+
+Not completely inspiring is it? No worries, we're going to add the tasks that we created in the admin console earlier.
+
+Open tasks/views.py and this time we'll add the lists of tasks we've created and then have them rendered on the template page:
+
+```python
+"""Views module for the tasks app."""
+from django.shortcuts import render
+from tasks.models import Task
+
+
+def index(request):
+    
+    task_list = Task.objects.all()
+
+    return render(
+        request,
+        'tasks_index.html',
+        {
+            'task_list' : task_list,
+        }
+    )
+```
+
+Save views.py and open tasks_index.html and make sure you have this:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <title>ToDo App</title>
+</head>
+<body>
+    <div class="jumbotron text-center">
+      <h1>ToDo's</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+            </div>
+        
+            <div class="col-sm-4">
+                <h3>Tasks List</h3>
+
+                <table>
+                    <tr>
+                        <th>Task</th>
+                        <th>Due?</th>
+                    </tr>
+                    {% for task in task_list %}
+
+                        <tr>
+                            <td>
+                                {{ task.title }}
+                            </td>
+                            <td>
+                                {{ task.due }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-sm-4">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+```
+
+Now, have a look at it at http://localhost:8000. Looks a little better now, right?
+
+Well, we probably could use some CSS to spread the table out a bit. In the todo directory, add a static/css directory:
+
+```
+$ cd todo
+$ mkdir -p static/css
+```
+
+Our directory structure should now look like:
+
+```
+├── db.sqlite3
+├── manage.py
+├── static
+│   └── css
+├── tasks
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   ├── models.py
+│   ├── templates
+│   │   └── tasks_index.html
+│   ├── tests.py
+│   └── views.py
+└── todo
+    ├── __init__.py
+    ├── __pycache__
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+```
+
+We need to let Django know that our static directory will serve only static files. Add the following to the end of todo/settings.py:
+
+```python
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+```
+
+Next, let's create a css file at static/csss/base.css and add the following:
+
+```css
+
+td {
+  padding: 10px 5px;
+}
+
+```
+
+and add a link tag to reference the css file in tasks_index.html:
+
+```html
+...
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/base.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+...
+```
+
+Now, start up the development server and go to http://localhost:8000. Looks a little better now. The table is a bit more spread out.
+
+So now, our page will display all of our tasks but we need a form so that we can create them as needed. In most other web frameworks, you would have to create an html form from scratch but with Django, there's no need for that. We can have one created for us based on the Task model itself.
+
+Create a file called tasks/forms.py and add the following to it:
+
+```python
+"""Forms module for tasks app."""
+from django.forms import ModelForm
+from .models import Task
+
+
+class TaskForm(ModelForm):
+    class Meta:
+        model = Task
+        fields = [
+            'title', 'description', 'due', 'end', 'importance',
+        ]
+
+```
+
+Now, we need to go back to tasks/views.py and create a form there to put in our template. Our index view should now look like:
+
+```python
+"""Views module for the tasks app."""
+from django.shortcuts import render
+from tasks.models import Task
+from tasks.forms import TaskForm
+
+
+def index(request):
+    
+    task_list = Task.objects.all()
+    task_form = TaskForm()
+
+    return render(
+        request,
+        'tasks_index.html',
+        {
+            'task_form': task_form,
+            'task_list' : task_list,
+        }
+    )
+
+```
+
+and in our tasks_index.html, we'll add this:
+
+```html
+...
+</table>
+
+  <h3>Add New Task</h3>
+  <table>
+      {{ task_form.as_table }}
+      <tr>
+          <td></td>
+          <td>
+              <input type="submit" value="Save" />
+          </td>
+      </tr>
+  </table>
+
+</div>
+...
+```
+
+You should now see the form at http://localhost:8000 but you'll notice that clicking on the Save button doesn't do anything. So, we'll need to add some form processing functionality. First let's add a form tag in our tasks_index.html page:
+
+```html
+...
+<h3>Add New Task</h3>
+<form action="" method="POST">
+    <table>
+        {{ task_form.as_table }}
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Save" />
+            </td>
+        </tr>
+    </table>
+</form>
+...
+```
+
+ Open the tasks/views.py and make sure you have the following code for the index function:
+
+```python
+
+```
+
+Now, if you try save a new Task, you should see this error message in your browser:
+
+```
+Forbidden (403)
+CSRF verification failed. Request aborted.
+Help
+Reason given for failure:
+    CSRF token missing or incorrect.
+```
+
+You will need a csrf_token tag right after your form tag in the html. I left this part out on purpose so you can see how Django handles the Cross Site Request Forgery vulnerability. In case you're not aware of what that is, a CSRF is an attack that forces an end user to execute unwanted actions on a web application in which they're currently authenticated. CSRF attacks specifically target state-changing requests, not theft of data, since the attacker has no way to see the response to the forged request. If you're curious to know more about it, I would recommend having a read [here](https://en.wikipedia.org/wiki/Cross-site_request_forgery) further about it.
+
+So the area near our form tag should look something like this to handle it:
+
+```html
+...
+<h3>Add New Task</h3>
+  <form action="" method="POST">
+      {% csrf_token %}
+      <table>
+...                    
+```
+
+Now, try to save your new task to our ToDo app. When filling out the Due and End field, your format should like this:
+
+YEAR-MO-DA HR:MN:SE
+
+or
+
+2017-10-20 13:00:00
+
+When you save your new task it should show up in your list.
 
 
 
