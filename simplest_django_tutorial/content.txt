@@ -131,6 +131,7 @@ Our directory structure (from the projects directory) should now look like:
 ### 3a. Run migrations and create admin user
 
 ```
+$ cd todo
 $ ./manage.py makemigrations
 No changes detected
 $ ./manage.py migrate
@@ -221,6 +222,73 @@ to
 ```python
 ALLOWED_HOSTS = ['192.168.15.17',] # or to your virtualbox ip address 
 ```
+
+To access the admin page of your Django app, point your browser to http://localhost:8000/admin. You'll login with the admin user you created from ./manage.py createsuperuser. Have a look around. For now, there's not much to see, though you should be able to find Users and Groups under Authentication and Authorization.
+
+Ok. Come on out and back to the terminal. Go ahead and enter control-C to end the development server.
+
+## 4 Create an App
+
+Inside the top todo directory, let's go ahead and create the tasks app. We use manage.py to do this:
+
+```python
+$ ./manage.py startapp tasks
+```
+
+This will create a folder called tasks with the following content:
+
+```
+tasks
+├── __init__.py
+├── admin.py
+├── apps.py
+├── migrations
+│   └── __init__.py
+├── models.py
+├── tests.py
+└── views.py
+```
+
+Let's go ahead and create our Task model. Open tasks/models.py and add the following code:
+
+```python
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
