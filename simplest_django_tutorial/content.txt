@@ -249,13 +249,109 @@ tasks
 └── views.py
 ```
 
+Now, let's open todo/settings.py and register our new app with our project:
+
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'tasks', # <- add tasks, the name of our app, here
+]
+```
+
 Let's go ahead and create our Task model. Open tasks/models.py and add the following code:
 
 ```python
+"""Models module for the tasks app."""
+from django.db import models
 
+
+class Task(models.Model):
+
+    title = models.CharField('Title', max_length=100)
+    description = models.TextField('Description')
+    created = models.DateTimeField(auto_now_add=True)
+    due = models.DateTimeField()
+    end = models.DateTimeField()
+    importance = models.CharField(
+        'Importance', max_length=50, choices=(
+            ('Important/Urgent', 'Important/Urgent'),
+            ('Important/Not urgent', 'Important/Not urgent'),
+            ('Not important/Urgent', 'Not important/Urgent'),
+            ('Not important/Not urgent', 'Not important/Not urgent'),
+        )
+    )
+
+    def __str__(self):
+        return self.title
 ```
 
+Our tasks app's most important object is going to be a Task model. Here we've defined the following fields for our task:
 
+* Title (the title of our task)
+* Description (a description of the task)
+* Created (when the task was entered -- note that this will not be editable by users)
+* Due (when the task is due)
+* End (when the task is expected to be finished)
+* Importance (level of importance of the task -- Stretch goal: ever hear of Stephen Covey? Look up his theories on importance/urgency for tasks)
+* We've also added a helper function for __str__. This will give us a string representation of our model when it's listed in the admin console.
+
+Next, let's add this model in our tasks/admin.py file:
+
+```python
+from django.contrib import admin
+from tasks.models import Task
+
+
+admin.site.register(Task)
+```
+
+We have to add our Task model and "register" it so that it shows in our admin console. But first, we need to register our model with the database -- that is, create a table with columns that match each of the fields above and their datatypes.
+
+```
+$ ./manage.py makemigrations
+Migrations for 'tasks':
+  tasks/migrations/0001_initial.py
+    - Create model Task
+
+$ ./manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, sessions, tasks
+Running migrations:
+  Applying tasks.0001_initial... OK
+```
+
+Now, let's start up the Django dev server with:
+
+```
+$ ./manage.py runserver
+```
+
+Point your browser to http://localhost:8000/admin
+
+We should now see a new app called Tasks with Tasks as our model. Click on Add for tasks and let's create a couple of tasks. Create these two:
+
+Title: Go to the store
+Description: Buy some milk and bread
+Due: Set tomorrow's date and time to 12:00pm
+End: Set tomorrow's date and time to 12:30pm
+Importance: Set to Important/Urgent. After all, a big snowstorm is coming. We don't want to be without milk and bread :-)
+
+Title: Go see the chiropractor
+Description: Need a back and neck alignment
+Due: Set tomorrow's date and time to 4:00pm
+End: Set tomorrow's date and time to 5:00pm
+Importance: Set to Important/Not urgent. We could skip our appointment but we really need to get the back aligned :-)
+
+Now that we've created and saved those two tasks, when we go to the Tasks page in admin, we should see two tasks with the titles showing in a list.
+
+We could just use Django's admin console but it's very limited in what we can do with it. So, we're going to make our own page.
+
+Go ahead and stop the development server by issuing control-c at the command line.
 
 
 
