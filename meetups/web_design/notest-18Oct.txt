@@ -1,0 +1,52 @@
+
+Headers
+
+should only hve 1 h1 header, contain vairtiation of keyword for page
+
+h2 - contain a variation but ... dont be redundant
+
+h3-h5 not important
+
+do not "stuff" keywords into headers - write naturally
+
+
+Image
+
+use image alt tags, another ranking factor for google
+
+gogle bots able to interpret images
+
+use keywords in filenames (blog.jpg)
+
+compressed images to increase load speed
+
+Load speed see pagespeed insight
+
+
+Title tag
+
+Keep it at 70 characters
+
+Have a descriptoin on the index page. 160 characters - this shows in google
+
+
+Interlinking
+
+Site Map
+
+
+UX
+
+increase user time on site. increase engagement - polls? videos?
+
+
+Google My Business
+
+geotagging images (turn off for privacy)
+
+
+Check out Yext - an aggregator
+
+
+copyscape.org (plagiarism checker?)
+
