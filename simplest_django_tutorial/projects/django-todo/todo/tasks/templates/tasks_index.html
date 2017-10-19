@@ -36,6 +36,11 @@
                             <td>
                                 {{ task.due }}
                             </td>
+                            <td>
+                                <a href="/task/{{ task.id }}/">
+                                    Delete
+                                </a>
+                            </td>
                         </tr>
 
                     {% endfor %}

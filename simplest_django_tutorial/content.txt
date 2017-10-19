@@ -716,6 +716,70 @@ or
 
 When you save your new task it should show up in your list.
 
+There's only one thing left to add that will make our CRUD app complete. We need a quick way to delete our tasks. Open the tasks_index.html file and make sure your task_list loop looks like this:
+
+```python
+{% for task in task_list %}
+
+    <tr>
+        <td>
+            {{ task.title }}
+        </td>
+        <td>
+            {{ task.due }}
+        </td>
+        <td>
+            <a href="/task/{{ task.id }}/">
+                Delete
+            </a>
+        </td>
+    </tr>
+
+{% endfor %}
+```
+
+Open the tasks/views.py and let's add a new delete function:
+
+```python
+...
+from django.http import HttpResponseRedirect
+...
+
+def delete(request, task_id):
+
+    task = Task.objects.get(pk=task_id)
+    task.delete()
+
+    return HttpResponseRedirect('/')
+
+```
+
+And open todo/urls.py and add this route:
+
+```python
+from django.conf.urls import url
+from django.contrib import admin
+from tasks.views import index, delete
+
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(
+      regex=r'^$',
+      view=index,
+      name='tasks_index',
+    ),
+    url(
+      regex=r'^task/(?P<task_id>\d+)/$',
+      view=delete,
+      name='tasks_delete',
+    )
+]
+```
+
+Now, go to http://localhost:8000/ and you should see a "Delete" action link. If you click on Delete for any of the tasks, you should see them disappear.
+
+Ok, we've finished and you have a working single page app. Well, sort of. There are a number of things we would probably want to refactor or handle more in a way that reflects best practice but the goal of this post was just to show you how easy it is to use Django to build a quick app. Using what you've learned here, you can extend some of the functionality to include other apps or other things to enhance this project. It should also give you a better frame of reference when you look for help in places like StackOverflow or IRC or wherever you like to get help.
 
 
 

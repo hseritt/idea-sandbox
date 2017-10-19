@@ -1,4 +1,5 @@
 """Views module for the tasks app."""
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from tasks.models import Task
 from tasks.forms import TaskForm
@@ -25,3 +26,11 @@ def index(request):
             'task_list' : task_list,
         }
     )
+
+
+def delete(request, task_id):
+
+    task = Task.objects.get(pk=task_id)
+    task.delete()
+
+    return HttpResponseRedirect('/')
