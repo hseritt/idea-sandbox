@@ -2,7 +2,7 @@
 
 Here is the simplest Django tutorial you can ever hope for. The idea is to show you step by step how you can create a very simple ToDo list app.
 
-## 0 - Use Linux
+#### Use Linux or Mac but Avoid Windows
 
 If you don't have a Mac, a Linux (Ubuntu, Fedora or CentOS) box, workstation or laptop, then install VirtualBox. Install Ubuntu on a VirtualBox guest. 
 
@@ -14,9 +14,8 @@ Install Ubuntu 16.04 on VirtualBox. You can download Ubuntu 16.04 [here](http://
 
 Are you able to login to your Ubuntu 16.04 guest on VirtualBox? or Mac OS X? or your own Ubuntu 16.04 or CentOS 7 machine? Yes? Then, move on to Step 1.
 
-## 1 - Install the Prerequisites
 
-### 1a. Install necessary packages for Ubuntu:
+#### Install necessary packages for Ubuntu:
 
 ```
 $ sudo apt update
@@ -32,7 +31,7 @@ $ sudo yum install bzip2-libs bzip2-devel openssl-libs openssl-devel readline re
 
 ```
 
-### 1b. Install pyenv
+#### Install pyenv
 
 Open a terminal and run:
 
@@ -55,7 +54,7 @@ $ pyenv --version
 pyenv 1.1.5
 ```
 
-### 1c. Install latest Python version
+#### Install latest Python version
 
 ```
 $ pyenv install 3.6.3 
@@ -65,9 +64,7 @@ Installing Python-3.6.3...
 Installed Python-3.6.3 to /root/.pyenv/versions/3.6.3
 ```
 
-## 2 - Set Up The Todo Project
-
-### 2a. Set up the project folder and environment
+#### Set up the project folder and environment
 
 ```
 $ cd ~
@@ -106,7 +103,7 @@ Django==1.11.6
 pytz==2017.2
 ```
 
-### 2b. Create our django todo project
+#### Create our django todo project
 
 ```
 $ django-admin startproject todo
@@ -126,9 +123,7 @@ Our directory structure (from the projects directory) should now look like:
             └── wsgi.py
 ```
 
-## 3 - Build database and Start Django
-
-### 3a. Run migrations and create admin user
+#### Run migrations and create admin user
 
 ```
 $ cd todo
@@ -159,7 +154,7 @@ Password (again):
 Superuser created successfully.
 ```
 
-### 3b. Start Django and Access the Admin Console
+#### Start Django and Access the Admin Console
 
 If you're doing this from your own laptop or workstation:
 
@@ -227,7 +222,7 @@ To access the admin page of your Django app, point your browser to http://localh
 
 Ok. Come on out and back to the terminal. Go ahead and enter control-C to end the development server.
 
-## 4 Create an App
+#### Create the Tasks App
 
 Inside the top todo directory, let's go ahead and create the tasks app. We use manage.py to do this:
 
@@ -262,6 +257,8 @@ INSTALLED_APPS = [
     'tasks', # <- add tasks, the name of our app, here
 ]
 ```
+
+#### Create the Task Model
 
 Let's go ahead and create our Task model. Open tasks/models.py and add the following code:
 
@@ -355,6 +352,8 @@ Go ahead and stop the development server by issuing control-c at the command lin
 
 We'll need a directory to store our html templates so that a page for our tasks can be rendered. Create a subdirectory called 'templates' under tasks directory.
 
+#### Build Template
+
 ```
 $ mkdir -p tasks/templates
 ```
@@ -422,6 +421,8 @@ Next, create an html file called tasks_index.html inside tasks/templates using t
 </body>
 </html>
 ```
+
+#### Add URL Route
 
 Now, we need to add a route to our tasks app index page. Open todo/urls.py and make sure you have the following:
 
@@ -528,6 +529,8 @@ Save views.py and open tasks_index.html and make sure you have this:
 
 Now, have a look at it at http://localhost:8000. Looks a little better now, right?
 
+#### Add Some CSS (but not much)
+
 Well, we probably could use some CSS to spread the table out a bit. Stop the development server. In the main todo project directory, add a static/css directory:
 
 ```
@@ -594,6 +597,8 @@ and add a link tag to reference the css file in tasks_index.html:
 Now, start up the development server and go to http://localhost:8000. Looks a little better now. The table is a bit more spread out.
 
 So now, our page will display all of our tasks but we need a form so that we can create them as needed. In most other web frameworks, you would have to create an html form from scratch but with Django, there's no need for that. We can have one created for us based on the Task model itself.
+
+#### Create a Form for Task Model
 
 Create a file called tasks/forms.py and add the following to it:
 
@@ -711,6 +716,8 @@ def index(request):
 
 ```
 
+#### Add Some Security
+
 Now, if you try save a new Task, you should see this error message in your browser:
 
 ```
@@ -782,6 +789,8 @@ def delete(request, task_id):
 
 ```
 
+#### Add URL Routing
+
 And open todo/urls.py and add this route:
 
 ```python
@@ -808,36 +817,3 @@ urlpatterns = [
 Now, go to http://localhost:8000/ and you should see a "Delete" action link. If you click on Delete for any of the tasks, you should see them disappear.
 
 Ok, we've finished and you have a working single page app. Well, sort of. There are a number of things we would probably want to refactor or handle more in a way that reflects best practice but the goal of this post was just to show you how easy it is to use Django to build a quick app. Using what you've learned here, you can extend some of the functionality to include other apps or other things to enhance this project. It should also give you a better frame of reference when you look for help in places like StackOverflow or IRC or wherever you like to get help.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -26,3 +26,11 @@ def index(request):
             'task_list' : task_list,
         }
     )
+
+
+def delete(request, task_id):
+
+    task = Task.objects.get(pk=task_id)
+    task.delete()
+
+    return HttpResponseRedirect('/')
