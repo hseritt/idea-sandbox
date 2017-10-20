@@ -356,7 +356,7 @@ Go ahead and stop the development server by issuing control-c at the command lin
 We'll need a directory to store our html templates so that a page for our tasks can be rendered. Create a subdirectory called 'templates' under tasks directory.
 
 ```
-$ mkdir tasks/templates
+$ mkdir -p tasks/templates
 ```
 
 And now our tasks app structure should look like:
@@ -528,7 +528,7 @@ Save views.py and open tasks_index.html and make sure you have this:
 
 Now, have a look at it at http://localhost:8000. Looks a little better now, right?
 
-Well, we probably could use some CSS to spread the table out a bit. In the todo directory, add a static/css directory:
+Well, we probably could use some CSS to spread the table out a bit. Stop the development server. In the main todo project directory, add a static/css directory:
 
 ```
 $ cd todo
@@ -680,6 +680,34 @@ You should now see the form at http://localhost:8000 but you'll notice that clic
  Open the tasks/views.py and make sure you have the following code for the index function:
 
 ```python
+"""Views module for the tasks app."""
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from tasks.models import Task
+from tasks.forms import TaskForm
+
+
+def index(request):
+    
+    task_list = Task.objects.all()
+
+    if request.method == 'POST':
+      task_form = TaskForm(request.POST)
+      if task_form.is_valid():
+        task_form.save()
+        task_form = TaskForm()
+
+    else:
+      task_form = TaskForm()
+
+    return render(
+        request,
+        'tasks_index.html',
+        {
+            'task_form': task_form,
+            'task_list' : task_list,
+        }
+    )
 
 ```
 

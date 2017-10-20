@@ -48,16 +48,16 @@
 
                 <h3>Add New Task</h3>
                 <form action="" method="POST">
-                    {% csrf_token %}
-                    <table>
-                        {{ task_form.as_table }}
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input type="submit" value="Save" />
-                            </td>
-                        </tr>
-                    </table>
+                {% csrf_token %}
+                  <table>
+                      {{ task_form.as_table }}
+                      <tr>
+                          <td></td>
+                          <td>
+                              <input type="submit" value="Save" />
+                          </td>
+                      </tr>
+                  </table>
                 </form>
             </div>
             <div class="col-sm-4">
