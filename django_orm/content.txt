@@ -42,4 +42,13 @@ $ ./manage.py createsuperuser
 $ ./manage.py runserver
 ```
 
+Queries
 
+=
+>
+<
+>=
+<=
+or
+and
+order_by
