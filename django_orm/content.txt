@@ -184,7 +184,169 @@ if __name__ == '__main__':
 
 ```
 
-It will create the cars in your database. You can look back at http://localhost:8000/admin to verify if you like.
+It will create the cars in your database. You can look back at http://localhost:8000/admin to verify if you like. With the cars in the database we can start on some queries so that you can understand how to do this more easily.
+
+From the command line in the project directory, open a shell into our Django environment by typing:
+
+```
+$ ./manage.py shell
+Python 3.6.3 (default, Oct  3 2017, 19:25:54) 
+[GCC 4.2.1 Compatible Apple LLVM 7.0.2 (clang-700.1.81)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> 
+```
+
+The shell invoked by the manage.py will already have sourced the current path and the ormdemo/settings.py module. We will however need to import the Car model so we can work with it:
+
+```
+>>> from demoapp.models import Car
+```
+
+Let's do a very simple query by requesting all cars in the Car table:
+
+```
+>>> car_list = Car.objects.all()
+```
+
+We can see that the result as car_list is of type QuerySet. This is a special type that is very similar to a list:
+
+```
+>>> print(type(car_list))
+<class 'django.db.models.query.QuerySet'>
+```
+
+Natuarally then, we should be able to use a for loop or list comprehension to iterate through the results.
+
+```
+>>> print([car for car in car_list])
+[<Car: 1989 Hyundai Excel SE>, <Car: 1987 Hyundai Excel SE>, <Car: 1994 Pontiac Sunbird SE>, <Car: 1996 Pontiac Grand AM LX>, <Car: 1990 Hyundai Excel SE>, <Car: 2003 Mercury Villager LS>, <Car: 2004 Ford Focus S>, <Car: 2001 Honda Accord EX-L V6>, <Car: 2004 Toyota Tacoma TRD>, <Car: 2005 Jeep Cherokee Overland>, <Car: 2001 Toyota 4Runner SR5>]
+```
+
+We can limit our list by using the filter method:
+
+```
+>>> car_list = Car.objects.filter(cmake='Hyundai')
+>>> for car in car_list:
+...     print(car)
+... 
+1989 Hyundai Excel SE
+1987 Hyundai Excel SE
+1990 Hyundai Excel SE
+```
+
+We can use multiple qualifiers also:
+
+```
+>>> car_list = Car.objects.filter(cmake='Hyundai', year=1990)
+>>> for car in car_list:
+...     print(car)
+... 
+1990 Hyundai Excel SE
+```
+
+You may be tempted to use sorted() function on the QuerySet object but there's already a built in sort with .order_by() like so:
+
+```
+>>> for car in Car.objects.all().order_by('year'): print(car.year, car.cmake)
+... 
+1987 Hyundai
+1989 Hyundai
+1990 Hyundai
+1994 Pontiac
+1996 Pontiac
+2001 Honda
+2001 Toyota
+2003 Mercury
+2004 Ford
+2004 Toyota
+2005 Jeep
+```
+
+Need it in reverse? We can use the special prepend to the sorted key with "-":
+
+```
+>>> for car in Car.objects.all().order_by('-year'): print(car.year, car.cmake)
+... 
+2005 Jeep
+2004 Ford
+2004 Toyota
+2003 Mercury
+2001 Honda
+2001 Toyota
+1996 Pontiac
+1994 Pontiac
+1990 Hyundai
+1989 Hyundai
+1987 Hyundai
+```
+
+We can also do order_by with multiple keys like: .order_by('-year', 'cmake').
+
+Note that in both cases above, filter() will produce a queryset which is an iterator.
+
+If we wanted to pull only one car from the Car table we could use a qualifier with the get method:
+
+```
+>>> my_car = Car.objects.get(cmodel='4Runner')
+>>> print(my_car)
+2001 Toyota 4Runner SR5
+>>> print(type(my_car))
+<class 'demoapp.models.Car'>
+```
+
+We can further narrow down our results with multiple qualifiers like we did when we used filter():
+
+```
+>>> Car.objects.get(cmake='Hyundai', year=1990)
+<Car: 1990 Hyundai Excel SE>
+```
+
+If we were to use get() in such a way that it returns more than one result, we'll get an error:
+
+```
+>>> my_car = Car.objects.get(cmodel='Excel')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "/Users/hseritt/.pyenv/versions/django-orm/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/Users/hseritt/.pyenv/versions/django-orm/lib/python3.6/site-packages/django/db/models/query.py", line 384, in get
+    (self.model._meta.object_name, num)
+demoapp.models.MultipleObjectsReturned: get() returned more than one Car -- it returned 3!
+```
+
+So, be careful with get(). If it's possible you will get more than one result, use filter().
+
+We have some functionality that behaves like comparison expressions. If you are familiar with SQL, you may be tempted to think you could use >, >=, <= and < but there are some special variables that can be used instead:
+
+Wrong:
+
+```
+>>> Car.objects.filter(year > 1990)
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'year' is not defined
+```
+
+Correct:
+
+```
+>>> Car.objects.filter(year__gt=1990)
+<QuerySet [<Car: 1994 Pontiac Sunbird SE>, <Car: 1996 Pontiac Grand AM LX>, <Car: 2003 Mercury Villager LS>, <Car: 2004 Ford Focus S>, <Car: 2001 Honda Accord EX-L V6>, <Car: 2004 Toyota Tacoma TRD>, <Car: 2005 Jeep Cherokee Overland>, <Car: 2001 Toyota 4Runner SR5>]>
+```
+
+This is also correct:
+
+```
+>>> Car.objects.filter(year__lt=1990)
+<QuerySet [<Car: 1989 Hyundai Excel SE>, <Car: 1987 Hyundai Excel SE>]>
+```
+
+You can also append __gte (>=) and __lte (<=) to get similar results.
+
+
+
+We 
 
 Queries
 
