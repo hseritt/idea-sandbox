@@ -1,6 +1,36 @@
 
 
+Throughout this article on Django ORM queries, we'll set up our demo as it's shown in the following code figures.
 
+First, we'll want to set up a Django project. My example is called ormdemo. You can build it like this:
+
+```
+$ cd [your projects or sandbox directory]
+$ django-admin.py startproject ormdemo
+$ cd ormdemo
+$ ./manage.py startapp demoapp
+$ cd demoapp
+```
+
+For reference, your ormdemo project should look like:
+
+```
+├── demoapp
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   └── views.py
+├── manage.py
+├── ormdemo
+   ├── __init__.py
+   ├── settings.py
+   ├── urls.py
+   └── wsgi.py
+```
+
+Here is our Car model. We want to put this in models.py:
 
 ```python
 from datetime import datetime
@@ -20,10 +50,9 @@ class Car(models.Model):
     def __str__(self):
         return f'{self.year} {self.cmake} {self.cmodel} {self.trim}'
 
-
 ```
 
-
+Add the following to the admin.py file in the demoapp directory:
 
 ```python
 from django.contrib import admin
@@ -33,7 +62,7 @@ from .models import Car
 admin.site.register(Car)
 ```
 
-
+Now, we're ready to build our database. We'll keep this simple and use the sqlite3 db that comes ready to go out of the box with Django:
 
 ```
 $ ./manage.py makemigrations demoapp
@@ -41,6 +70,121 @@ $ ./manage.py migrate
 $ ./manage.py createsuperuser
 $ ./manage.py runserver
 ```
+
+With Django running you should be able to access the admin at http://localhost:8000/admin (you will log in with the admin user you created with ./manage.py createsuperuser).
+
+You should see under Demoapp the Car model. You can click Add to add a new car just so you can see how the admin part works but I am including a script that will add a number of cars -- actually cars I have owned over the years :-).
+
+Here is the script. You can put this in the project directory, call it add_cars.py, make it executable if you're on Linux ($ chmod +x add_cars.py) and run it:
+
+```python
+#!/usr/bin/env python
+
+import os
+import sys
+import django
+
+
+sys.path.append('.')
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ormdemo.settings'
+django.setup()
+
+from demoapp.models import Car
+
+if __name__ == '__main__':
+
+    car_list = [
+        {
+            'cmake': 'Hyundai',
+            'cmodel': 'Excel',
+            'trim': 'SE',
+            'year': 1989,
+            'price': 2000.00,
+        },
+        {
+            'cmake': 'Hyundai',
+            'cmodel': 'Excel',
+            'trim': 'SE',
+            'year': 1987,
+            'price': 1500.00,
+        },
+        {
+            'cmake': 'Pontiac',
+            'cmodel': 'Sunbird',
+            'trim': 'SE',
+            'year': 1994,
+            'price': 12000.00,
+        },
+        {
+            'cmake': 'Pontiac',
+            'cmodel': 'Grand AM',
+            'trim': 'LX',
+            'year': 1996,
+            'price': 14500.00,
+        },
+        {
+            'cmake': 'Hyundai',
+            'cmodel': 'Excel',
+            'trim': 'SE',
+            'year': 1990,
+            'price': 1200.00,
+        },
+        {
+            'cmake': 'Mercury',
+            'cmodel': 'Villager',
+            'trim': 'LS',
+            'year': 2003,
+            'price': 11000.00,
+        },
+        {
+            'cmake': 'Ford',
+            'cmodel': 'Focus',
+            'trim': 'S',
+            'year': 2004,
+            'price': 10000.00,
+        },
+        {
+            'cmake': 'Honda',
+            'cmodel': 'Accord',
+            'trim': 'EX-L V6',
+            'year': 2001,
+            'price': 6500.00,
+        },
+        {
+            'cmake': 'Toyota',
+            'cmodel': 'Tacoma',
+            'trim': 'TRD',
+            'year': 2004,
+            'price': 25000.00,
+        },
+        {
+            'cmake': 'Jeep',
+            'cmodel': 'Cherokee',
+            'trim': 'Overland',
+            'year': 2005,
+            'price': 6500.00,
+        },
+        {
+            'cmake': 'Toyota',
+            'cmodel': '4Runner',
+            'trim': 'SR5',
+            'year': 2001,
+            'price': 8000.00,
+        },
+    ]
+
+    for car in car_list:
+        c = Car()
+        for k, v in car.items():
+            setattr(c, k, v)
+        print(f'Adding {c} ...')
+        c.save()
+
+    print('Done.')
+
+```
+
+It will create the cars in your database. You can look back at http://localhost:8000/admin to verify if you like.
 
 Queries
 
