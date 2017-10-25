@@ -1,6 +1,12 @@
 
 
-Throughout this article on Django ORM queries, we'll set up our demo as it's shown in the following code figures.
+If you're an old guy like me, you are probably used to SQL queries. You can certainly use them with Python to retrieve data from RDBMS servers but they can be a little problematic for a number of different reasons. They can be difficult to implement without writing a lot of boilerplate code too. You also may have to write some additional code to translate the different data types from the database to Python data types. That's a lot of work! It also goes against the DRY (Don't repeat yourself) best practice as you will be repeating yourself with a lot of code.
+
+A general solution is SQL Alchemy. You can use this package to translate database data types to Python code but it can be a bit complex even for simple queries and transactions. It can also be difficult to set up if you're working with it for the first few times. It is best used for complex database operations and you may find that for most web apps it can actually be overkill.
+
+If you're not familiar with the term, ORM is Object Relational Mapping. That is, mapping data from a database to Python objects. Django has provided a simple ORM framework that is fairly simple to get running and understand. What I'd like to do with this article is to show you how to get it set up and how to run some common data retrievals. 
+
+For help with understanding how to do this, we'll set up our demo as it's shown in the following code figures.
 
 First, we'll want to set up a Django project. My example is called ormdemo. You can build it like this:
 
@@ -12,7 +18,7 @@ $ ./manage.py startapp demoapp
 $ cd demoapp
 ```
 
-For reference, your ormdemo project should look like:
+For reference, your ormdemo project should look like this:
 
 ```
 ├── demoapp
@@ -30,7 +36,7 @@ For reference, your ormdemo project should look like:
    └── wsgi.py
 ```
 
-Here is our Car model. We want to put this in models.py:
+To keep things simple, we're going to use a Car model. We want to put the following model definition in demoapp/models.py:
 
 ```python
 from datetime import datetime
@@ -52,7 +58,7 @@ class Car(models.Model):
 
 ```
 
-Add the following to the admin.py file in the demoapp directory:
+If you would like to have a look at the structure and data (when added later), add the following to the admin.py file in the demoapp directory:
 
 ```python
 from django.contrib import admin
@@ -71,11 +77,13 @@ $ ./manage.py createsuperuser
 $ ./manage.py runserver
 ```
 
+The database will have been built in the db.sqlite3 file in the project directory.
+
 With Django running you should be able to access the admin at http://localhost:8000/admin (you will log in with the admin user you created with ./manage.py createsuperuser).
 
-You should see under Demoapp the Car model. You can click Add to add a new car just so you can see how the admin part works but I am including a script that will add a number of cars -- actually cars I have owned over the years :-).
+You should see Car under demoapp in the admin UI. You can click Add to add a new car just so you can see how the admin part works but I am including a script that will add a number of cars -- actually these are all the cars I have owned over the years :-).
 
-Here is the script. You can put this in the project directory, call it add_cars.py, make it executable if you're on Linux ($ chmod +x add_cars.py) and run it:
+Here is the script. You can put this in the project directory, call it add_cars.py, make it executable if you're on Linux ($ chmod +x add_cars.py) and run it with ./add_cars.py:
 
 ```python
 #!/usr/bin/env python
@@ -184,7 +192,7 @@ if __name__ == '__main__':
 
 ```
 
-It will create the cars in your database. You can look back at http://localhost:8000/admin to verify if you like. With the cars in the database we can start on some queries so that you can understand how to do this more easily.
+The script will create all of these cars in your database. You can look back at http://localhost:8000/admin to verify that they were added if you like. With the cars in the database we can start working on some queries.
 
 From the command line in the project directory, open a shell into our Django environment by typing:
 
@@ -209,7 +217,7 @@ Let's do a very simple query by requesting all cars in the Car table:
 >>> car_list = Car.objects.all()
 ```
 
-We can see that the result as car_list is of type QuerySet. This is a special type that is very similar to a list:
+We can see that the result as car_list is of type QuerySet. This is a special type that is very similar to a list but has some functionality to help us better interface with the database:
 
 ```
 >>> print(type(car_list))
@@ -219,7 +227,7 @@ We can see that the result as car_list is of type QuerySet. This is a special ty
 Natuarally then, we should be able to use a for loop or list comprehension to iterate through the results.
 
 ```
->>> print([car for car in car_list])
+>>> [car for car in car_list]
 [<Car: 1989 Hyundai Excel SE>, <Car: 1987 Hyundai Excel SE>, <Car: 1994 Pontiac Sunbird SE>, <Car: 1996 Pontiac Grand AM LX>, <Car: 1990 Hyundai Excel SE>, <Car: 2003 Mercury Villager LS>, <Car: 2004 Ford Focus S>, <Car: 2001 Honda Accord EX-L V6>, <Car: 2004 Toyota Tacoma TRD>, <Car: 2005 Jeep Cherokee Overland>, <Car: 2001 Toyota 4Runner SR5>]
 ```
 
@@ -235,7 +243,7 @@ We can limit our list by using the filter method:
 1990 Hyundai Excel SE
 ```
 
-We can use multiple qualifiers also:
+We can use multiple qualifiers also. Here, we are looking for any car whose make is Hyundai and the year is 1990:
 
 ```
 >>> car_list = Car.objects.filter(cmake='Hyundai', year=1990)
@@ -245,10 +253,11 @@ We can use multiple qualifiers also:
 1990 Hyundai Excel SE
 ```
 
-You may be tempted to use sorted() function on the QuerySet object but there's already a built in sort with .order_by() like so:
+You may be tempted to use the sorted() function on the QuerySet object but there's already a built in sort with .order_by() like so:
 
 ```
->>> for car in Car.objects.all().order_by('year'): print(car.year, car.cmake)
+>>> for car in Car.objects.all().order_by('year'):
+		print(car.year, car.cmake)
 ... 
 1987 Hyundai
 1989 Hyundai
@@ -263,7 +272,7 @@ You may be tempted to use sorted() function on the QuerySet object but there's a
 2005 Jeep
 ```
 
-Need it in reverse? We can use the special prepend to the sorted key with "-":
+Need it in reverse? We can use the special prepend to the sorted key with "-". See '-year' below:
 
 ```
 >>> for car in Car.objects.all().order_by('-year'): print(car.year, car.cmake)
@@ -281,9 +290,9 @@ Need it in reverse? We can use the special prepend to the sorted key with "-":
 1987 Hyundai
 ```
 
-We can also do order_by with multiple keys like: .order_by('-year', 'cmake').
+We can also do order_by with multiple keys like: .order_by('-year', 'cmake'). This will do a sort first on year and then another sort based on cmake.
 
-Note that in both cases above, filter() will produce a queryset which is an iterator.
+Note that in all cases above, filter() and all() will produce a queryset which happens to be an iterator.
 
 If we wanted to pull only one car from the Car table we could use a qualifier with the get method:
 
@@ -302,7 +311,7 @@ We can further narrow down our results with multiple qualifiers like we did when
 <Car: 1990 Hyundai Excel SE>
 ```
 
-If we were to use get() in such a way that it returns more than one result, we'll get an error:
+Be careful though. If we were to use get() in such a way that it returns more than one result, we'll get an error:
 
 ```
 >>> my_car = Car.objects.get(cmodel='Excel')
@@ -315,11 +324,11 @@ Traceback (most recent call last):
 demoapp.models.MultipleObjectsReturned: get() returned more than one Car -- it returned 3!
 ```
 
-So, be careful with get(). If it's possible you will get more than one result, use filter().
+If it's possible that you will get more than one result, use filter() instead of get().
 
-We have some functionality that behaves like comparison expressions. If you are familiar with SQL, you may be tempted to think you could use >, >=, <= and < but there are some special variables that can be used instead:
+Django also has some functionality that behaves like comparison expressions. If you are familiar with SQL, you may be tempted to think you could use >, >=, <= and < but Django does have some special variables that can be used instead:
 
-Wrong:
+So, this would be wrong:
 
 ```
 >>> Car.objects.filter(year > 1990)
@@ -328,33 +337,60 @@ Traceback (most recent call last):
 NameError: name 'year' is not defined
 ```
 
-Correct:
+and this would be correct:
 
 ```
 >>> Car.objects.filter(year__gt=1990)
 <QuerySet [<Car: 1994 Pontiac Sunbird SE>, <Car: 1996 Pontiac Grand AM LX>, <Car: 2003 Mercury Villager LS>, <Car: 2004 Ford Focus S>, <Car: 2001 Honda Accord EX-L V6>, <Car: 2004 Toyota Tacoma TRD>, <Car: 2005 Jeep Cherokee Overland>, <Car: 2001 Toyota 4Runner SR5>]>
 ```
 
-This is also correct:
+This is also correct (yep, you guessed it, __lt is short for less than):
 
 ```
 >>> Car.objects.filter(year__lt=1990)
 <QuerySet [<Car: 1989 Hyundai Excel SE>, <Car: 1987 Hyundai Excel SE>]>
 ```
 
-You can also append __gte (>=) and __lte (<=) to get similar results.
+What about greater or equal than and its sibling less or equal than?
 
+You can append __gte (>=) and __lte (<=) to get similar results.
 
+A way to emulate SQL's LIKE '%mystr' is to use __startswith and __endswith.
 
-We 
+If we want to query based on what a field's value starts with, we can use the special append, "__startswith":
 
-Queries
+```
+>>> Car.objects.filter(cmake__startswith='Pon')
+<QuerySet [<Car: 1994 Pontiac Sunbird SE>, <Car: 1996 Pontiac Grand AM LX>]>
+```
 
-=
->
-<
->=
-<=
-or
-and
-order_by
+We can also make this case insensitive with "__istartswith":
+
+```
+>>> Car.objects.filter(cmake__istartswith='to')
+<QuerySet [<Car: 2004 Toyota Tacoma TRD>, <Car: 2001 Toyota 4Runner SR5>]>
+```
+
+If you will remember that Django ORM queries are not pure Python expressions but rather parameter comparisons, this should key you to look for any kind of constructed filters that will meet your needs.
+
+What if you wanted to do an "or" type of query. Again, you may think it's ok to add a keyword "or" in the parameters since Python certainly has an "or" operator.
+
+But, this would be wrong:
+
+```
+>>> Car.objects.filter(cmake='Toyota' or cmake='Honda')
+  File "<console>", line 1
+    Car.objects.filter(cmake='Toyota' or cmake='Honda')
+                                              ^
+SyntaxError: invalid syntax
+```
+
+Instead, we would need to make use of Django's Q object to handle "or".
+
+```
+>>> from django.db.models import Q
+>>> Car.objects.filter( Q(cmake='Toyota') | Q(cmake='Honda') )
+<QuerySet [<Car: 2001 Honda Accord EX-L V6>, <Car: 2004 Toyota Tacoma TRD>, <Car: 2001 Toyota 4Runner SR5>]>
+```
+
+Once you get the hang of Django's query methods and constructions you will find it much easier than using SQL. Django's ORM is designed to be very natural and very Pythonic. 
