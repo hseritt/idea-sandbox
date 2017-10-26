@@ -1,0 +1,47 @@
+
+Install pyenv. You can get it from Github:
+
+```
+$ curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
+```
+
+Next, add the following code to the end of your /home//.bashrc file (or to .bash_profile if you're on a Redhat style system):
+
+```bash
+export PATH="/home/hseritt/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+```
+
+Source your .bashrc (or .bash_profile if you're using a RedHat style system) file so that pyenv and helper executables will now be in your path:
+
+```
+$ . .bashrc 
+```
+
+Install the latest version of Python:
+
+```
+$ pyenv install 3.6.3
+```
+
+Go to a directory that houses your apps/development work:
+
+```
+$ cd projects
+$ mkdir django-blog
+$ cd django-blog
+$ pyenv global 3.6.3
+$ pyenv virtualenv django-blog
+$ pyenv local django-blog
+$ source activate django-blog
+$ wget https://github.com/hseritt/django-blog/archive/master.zip
+$ unzip master.zip
+$ mv django-blog-master/* .
+$ rm -rf django-blog-master/ master.zip
+$ pip install -r requirements.txt
+$ cd blog
+$ ./manage.py makemigrations
+$ ./manage.py migrate
+$ ./manage.py createsuperuser
+```
