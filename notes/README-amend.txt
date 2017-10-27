@@ -68,3 +68,31 @@ DATABASES = {
 $ ./manage.py migrate
 $ ./manage.py createsuperuser
 ```
+
+Now, you can start the server with:
+
+```
+$ ./runserver.sh
+```
+
+If you're trying to access it from a remote machine, you will see an error similar to this when you open http://<remote_ip>:8000 :
+
+```
+DisallowedHost at /
+Invalid HTTP_HOST header: '192.168.15.34:8000'. You may need to add '192.168.15.34' to ALLOWED_HOSTS.
+Request Method:	GET
+Request URL:	http://192.168.15.34:8000/
+Django Version:	1.11.5
+Exception Type:	DisallowedHost
+Exception Value:	
+Invalid HTTP_HOST header: '192.168.15.34:8000'. You may need to add '192.168.15.34' to ALLOWED_HOSTS.
+```
+
+If so, then open your blog/settings.py file change ALLOWED_HOSTS to be:
+
+```python
+ALLOWED_HOSTS = ['192.168.15.34',]
+```
+
+_Of course, your ip address will likely be different._
+
