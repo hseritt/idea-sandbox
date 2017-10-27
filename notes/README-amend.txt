@@ -42,6 +42,29 @@ $ rm -rf django-blog-master/ master.zip
 $ pip install -r requirements.txt
 $ cd blog
 $ ./manage.py makemigrations
+```
+
+If you have not set up a Postgresql database server, you will see an error similar to this:
+
+```
+django.db.utils.OperationalError: could not connect to server: Connection refused
+	Is the server running on host "127.0.0.1" and accepting
+	TCP/IP connections on port 5432?
+
+```
+
+You can set up a Postgresql database for this app or you like, you can use sqlite3 while you get this up and running. Make this change inside blog/settings.py:
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'blog.db',
+    }
+}
+```
+
+```
 $ ./manage.py migrate
 $ ./manage.py createsuperuser
 ```
