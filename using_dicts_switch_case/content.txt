@@ -1,0 +1,116 @@
+
+
+Certainly by now you have heard of functional programming. When most new and intermediate developers hear functional programming, they very quickly think of javascript and maybe some other programming languages that are built specifically to use the functional programming paradigm.
+
+Were you aware you can do this with Python? Functions in Python are first class objects as well. Consider the following code:
+
+```python
+#!/usr/bin/env python
+
+
+def subtract(num1, num2):
+    return num1 - num2
+
+
+func = {
+    '-': subtract,
+}
+
+
+if __name__ == '__main__':
+
+    diff = func['-'](6, 3)
+
+    print(diff)
+
+```
+
+Here, we've already defined a function to be called (subtract). It's very simple. It returns the difference between num1 and num2. We then define a callback if you will called 'func'. This can take the form really of any data structure but here we use a dictionary (this will in fact emulate a high-level switch-case statement). 
+
+We can then call func['-'] (to denote the subtract method) and have it subtract 3 from 6.
+
+We can also make things a bit more complex:
+
+```python
+#!/usr/bin/env python
+
+def add(*args):
+    return sum(args)
+
+def subtract(*args):
+    result = args[0]
+    for num in args[1:]:
+        result -= num
+    return result
+
+def multiply(*args):
+    result = 1
+    for num in args:
+        result *= num
+    return result
+
+def divide(*args):
+    result = args[0]
+    for num in args[1:]:
+        result /= num
+    return result
+
+func = {
+    '+': add,
+    '-': subtract,
+    '*': multiply,
+    '/': divide,
+}
+
+
+if __name__ == '__main__':
+
+    print(func['+'](5, 4, 2))
+    print(func['-'](5, 3, 1))
+    print(func['*'](3, 2, 2))
+    print(func['/'](24, 3, 2))
+
+```
+
+Now, when we say first class objects, that means we're also able to pass a function as a parameter.
+
+```python
+#!/usr/bin/env python
+
+
+def double(num):
+    return num * 2
+
+
+def triple(num):
+    return num * 3
+
+
+def add(*args, f=None):
+    if f:
+        return f(sum(args))
+    else:
+        return sum(args)
+
+
+if __name__ == '__main__':
+    print(add(5, 3, 2, 1))
+    print(add(5, 3, 2, 1, f=double))
+    print(add(5, 3, 2, 1, f=triple))
+```
+
+When we call add using args, we can send any number of numbers and then if we choose to, we send a function. Our available functions are double and triple.
+
+The output should of course be:
+
+```
+11
+22
+33
+```
+
+Here we've added our numbers (which add up to 11) and then double or triple them if we like.
+
+I am biased but I personally feel that Python handles this sort of thing much better than JavaScript. Python also makes use of decorators that can make this code even more efficient. If you're not using decorators and want to know more about them or you have trouble understanding them, I recommend having a look at an earlier [post](/post/python-decorators-simple-example/) I wrote. 
+
+There are a lot of other techniques you can use with functional programming but I wanted to show a very quick and easy to understand example if you are coming from the procedural and  object-oriented world and are wanting to better understand the functional programming paradigm.
