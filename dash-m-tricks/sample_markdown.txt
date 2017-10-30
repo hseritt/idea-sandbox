@@ -1,0 +1,18 @@
+# Welcome To Sample Markdown!
+
+## This is a smaller header
+
+This is a paragraph. Typically, when you can't think of anything to write but you need to test out some formatting, it's a good idea to use some "lorem ipsum":
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc pharetra dapibus semper. Aenean eget velit tristique, tincidunt arcu sed, malesuada nibh. Maecenas sed gravida ipsum. Morbi diam turpis, porttitor quis quam ut, fermentum ullamcorper augue. 
+
+Duis feugiat enim a nibh porttitor consequat. Nulla at purus eget ante scelerisque tempus id id massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. *Praesent* sollicitudin iaculis finibus. Phasellus quis pretium nulla. Sed lectus felis, vehicula vitae lectus a, hendrerit volutpat nibh. _Nulla eu ullamcorper mi, sit amet porta orci._ Cras dictum est aliquam turpis egestas blandit.
+
+Here is a list of some ipsum words:
+
+* Donec 
+* congue
+* quam 
+* nec 
+
+Ok, this is the end.
