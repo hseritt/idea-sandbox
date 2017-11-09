@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-names = 'Harlin', 'Mike', 'Philip',
+names = 'Bilbo', 'Frodo', 'Samwise',
 
 for name in names:
     print(name.zfill(5))
-
