@@ -1,37 +1,21 @@
 #!/usr/bin/env python
 
 
-def general_func(num1: int, num2: str) -> str:
-    assert isinstance(num1, int), 'num1 not an integer'
-    assert isinstance(num2, str), 'num2 not a string'
+class Thing(object):
+    def __init__(self, name: str, num: int) -> None:
+        assert isinstance(name, str), 'name must be of type str'
+        assert isinstance(num, int), 'num must be of type int'
+        self.name = name
+        self.num = num
 
-    ret_val = '{}{}'.format(num1, num2)
-    assert isinstance(ret_val, str), 'ret_val not a string'
-
-    return ret_val
-
-
-class MyClass(object):
-
-    def __init__(self, data: str):
-        self.data = data
-
-    def do_something_with_data(self) -> None:
-        self.data = self.data[::-1]
-        self.data = self.data[:-1]
-
-    def get_data(self) -> str:
-        return self.data
+    def greet(self) -> str:
+        greeting = f'Hello {self.name} it is nice to meet you!' \
+            + f' The number is {self.num}.'
+        assert isinstance(greeting, str), 'greeting must be of type str'
+        return greeting
 
 
 if __name__ == '__main__':
 
-    print(general_func('5', '5'))
-
-    myclass = MyClass('blahblah')
-    myclass.do_something_with_data()
-    print(myclass.get_data())
-
-    myclass = MyClass(789)
-    print(myclass.get_data())
-
+    thing = Thing('You', 5)
+    print(thing.greet())

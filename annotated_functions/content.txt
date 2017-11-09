@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/3038033/what-are-good-uses-for-python3s-function-annotations
