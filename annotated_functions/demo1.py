@@ -9,8 +9,8 @@ class Thing(object):
         self.num = num
 
     def greet(self) -> str:
-        greeting = f'Hello {self.name} it is nice to meet you!' \
-            + f' The number is {self.num}.'
+        greeting = f'Hello {self.name} it is nice to meet you! ' \
+                   f'The number is {self.num}.'
         assert isinstance(greeting, str), 'greeting must be of type str'
         return greeting
 

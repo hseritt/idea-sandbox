@@ -1,0 +1,100 @@
+Python - Using Slicing to Create Variable Copies
+
+Shallow and deep copying exist in most phases of computer science and operations. In Linux you can make a shallow copy of a file simply by using the "cp" command. 
+
+```
+$ touch linked_file.txt 
+$ cp linked_file.txt copied_file.txt
+```
+
+We now have a copied file called "copied_file.txt" which is not the same file as linked_file.txt. Since it has its own registration in the file system, it is its own file even if it has the same text as the original one.
+
+Using this same concept with file systems, a deep copy would be using a hard link:
+
+_Note: don't do this on your system without understanding it. Just follow along._
+
+```
+$ sudo ln /etc/hosts ./hosts
+$ ls -al /etc/hosts hosts 
+-rw-r--r-- 2 root root 287 Nov  8 14:00 /etc/hosts
+-rw-r--r-- 2 root root 287 Nov  8 14:00 hosts
+```
+
+Note that hosts file *is* the same file as /etc/hosts. Any changes you make to the "hosts" file in your local directory will be made at /etc/hosts. Know that you can remove a hard link and it will not remove the referred file:
+
+```
+$ sudo rm hosts 
+$ ls /etc/hosts
+/etc/hosts
+```
+
+You can do something very similar with Python variables. Be aware though, that the ability for objects to be shallow or deep copied only applies for compound objects like lists and class instances. Since a tuple can't be changed, there is no concept of shallow and deep copying with this object type.
+
+I'll show you a few examples:
+
+When you see [:], this is called slicing. As mentioned, there is different behavior based on the type of the array being used. If your array is a list, then a deep copy can be created:
+
+```python
+>>> my_list = ['spam', 'eggs']
+>>> copied = my_list[:]
+# Is "copied" the same as "my_list"?
+>>> print(copied is my_list)
+False
+```
+
+I'll show a proof:
+
+```python
+>>> my_list.append('bacon')
+>>> my_list
+['spam', 'eggs', 'bacon']
+>>> print(copied)
+['spam', 'eggs']
+```
+
+Note that copied is not the same variable as my_list.
+
+A shallow copy has a different type of behavior:
+
+```python
+>>> copied = my_list
+>>> print(copied is my_list)
+True
+```
+
+Based on Python's truthiness we can say that copied is the same variable as my_list. We can further prove it here:
+
+```python
+>>> copied
+['spam', 'eggs', 'bacon']
+>>> my_list.append('grits')
+>>> copied
+['spam', 'eggs', 'bacon', 'grits']
+```
+
+Note that when we added 'grits' to my_list 'copied' has the same values. The script below shows the same behaviors:
+
+```python
+#!/usr/bin/env python
+
+tree_list = ['oak', 'hickory', 'pecan']
+print('tree_list is: ', tree_list)
+
+del tree_list[:]
+print('tree_list is now empty: ', tree_list)
+
+tree_list_copy = tree_list
+print('tree_list_copy is empty too: ', tree_list_copy)
+
+tree_list[:] = ['maple', 'birch', 'apple']
+print('tree_list is now: ', tree_list)
+print('and so is tree_list_copy: ', tree_list_copy)
+
+print('tree_list_copy is a full copy? ', tree_list_copy is tree_list)
+
+shallow_copy = tree_list[:]
+print('shallow_copy is a shallow copy? ', shallow_copy is tree_list)
+
+```
+
+Be careful when using the slice as you can see where it has different behaviors than doing a new simple assignment. But, once you get a feel for them, you can use them to do some interesting things.

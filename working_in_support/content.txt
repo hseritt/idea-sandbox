@@ -1,0 +1,82 @@
+
+I've been trying to keep all posts here pretty much on technical topics but thought I'd touch on something that relates directly to my own job and path.
+
+I have worked as a technical support engineer at [Alfresco Software](http://www.alfresco.com) since December of 2011 but my last day will be next Friday, November 17, 2017. I have accepted a senior technical consultant position at Formtek (who is an Alfresco partner) and am very much looking forward to doing something a little bit different than what I have been doing at Alfresco. So, this post is something of an adieu to Alfresco and my role there. It's also a chance for me to do some preaching on a couple of subjects that I find compelling.
+
+First, I want to bring up something that I think is a work myth. Secondly, I want to bring up some points on productivity.
+
+About the myth part.
+
+You see a lot of advice out in the self-help parts of the interwebs about pursuing your passion. You know, like:
+
+"... if you do what you love, you'll never work a day in your life."
+
+"do what you love and the money will follow ..."
+
+ and so forth. Those things are great if you can realistically do them but in real life most people are not going to be able to do what they love. I have to admit, I have been guilty of sending out these platitudes to others along the same line.
+
+ I remember telling one friend in school that no one would ever be able to succeed at doing something they didn't like. I really believe it at the time. Now, thinking about me saying that makes me feel pretty bad.
+
+[I got started late working in technology](/about/). Since I was a senior in high school (that's a LONG time ago -- 1987), I've always had this interest in programming. I worked in other fields but after a series of layoffs and job losses, I decided to use my GI Bill to go back to college to pursue my "passion". 
+
+In 2002, I had just enough time and money saved up to work part time and go to school full time to get a CIS Associate's Degree. After graduating, I had to go to work immediately. By then, I had already had a family to support and had to take whichever job I could. There were some programming jobs around then but no one seemed to be willing to take a chance on a new grad.
+
+I was very fortunate to get an operator's job working at the Centers for Disease Control in Atlanta. I always wanted to do programming and development but somehow it seemed I could only find system admin/engineer jobs -- which were not bad at all really. I got paid well but I'll be honest, this kind of work was not what I ultimately wanted to do.
+
+Fast forward: after working as a sysadmin and doing light dev work, in 2011 I was working at Kudzu.com (a part of Cox Communications) helping run their website and I got laid off again. No big deal as I've gone through this sort of thing many times in different fields but this time in my job search, I was going to look for something different. Since my passion was more tied to development, I decided to look towards software. 
+
+I finally accepted a job at Alfresco Software working as a technical support engineer. My hope was that this role would expose me to more of the inner workings of a large software product and get me to better understand the process behind maintaining the product and improving it. 
+
+It did help me in this regard no doubt but, I found that the job was more of a customer service one and not nearly as technical as I had hoped. Alfresco did not fail me though. I was just naive and unaware of the soft skills that a position like this required. To be completely honest, I did not enjoy it at all. In fact, this was the only job I've ever had in technology where I did not look forward to coming to work after a weekend.
+
+As far as the company was concerned, Alfresco had the feel of a startup at least early on it did. I think we only had 150 employees then and everything had this fun and loose feel to it despite me not being able to warm up to the role.
+
+One great thing was that most people on our team worked remotely and this was tolerated fairly well. It can be difficult to find people with any kind of ECM expertise who wanted to work in support. If we had stayed in Atlanta then, I would have left the company and went back to doing system engineer work. The only thing keeping me there was the fact that my wife, Bridget had autoimmune rheumatoid arthritis and we needed the benefits and also we needed to be able to consider moving to a friendlier climate. For her disease, hot humid weather was making life miserable for her. We had discussed many times of moving out to Colorado, Utah or Arizona so she could get to a more dry and stable climate. So, I stayed there because it seemed we had a chance to move and very likely, I would still be able to keep my job at Alfresco and work remotely.
+
+Fortunately, we were able to do that. The move worked out very well for my family. But, not long after moving out here, Alfresco changed direction a bit by setting a goal of going public. We brought in an American CEO and effectively moved our main HQ from Maidenhead UK to San Mateo, CA. We then became something of a Silicon Valley company and I think this was done in the hopes that it would expedite being able to go public.
+
+Up until then, Alfresco had more of a geeky feel rather than a conservatively professional one. A lot of the older smaller customers we typically had liked that about us. But, in order to attract the bigger customers that a more public profile needed, we had to give off more of a professional image.
+
+So, at that point, we became more "corporate". As far as our department went, we had to standardize the way we did support. We had to answer the phones when they rang by the 2nd ring. All of our communication with customers became more transparent. Management was demanding that our support reponses be more strict and follow a particular format. Remote workers were being scrutinized a bit more than in the past. Our customers were asked to fill out surveys. No matter the cause of a customer's grief with our support -- a problem could be engineering's fault or perhaps a product management issue -- the bad survey marks were attached to the support person's name forever. Fair or unfair. To be perfectly honest, for us in support this transition was fairly painful. 
+
+The job became a little more miserable. I could have quit and left but I decided not to. It was good to be able to work from home. Alfresco provided very good benefits that helped immensely with my wife's chronic disease. This also allowed me to spend more time with my wife and kids since they were quickly finishing high school and getting ready to move on to college. 
+
+When you reach a certain age, you have to stick with something that is more stable even if it's not so exciting. ECM is not sexy or interesting even to be perfectly honest but these days it is a necessary software type that most companies have to use. So, despite the dullness, there was a lot of stability in working for Alfresco that was beneficial to us.
+
+For my own sanity eventually, I had to decide to make the most of the role. I was getting better from a technical standpoint concerning Alfresco the product but to be honest, I was not getting far with customers and making them happy. In my opinion the American market compared to the rest of the world could put up better with a lack of technical knowledge but absolutely would not tolerate the softer side of customer service being subpar.
+
+I was able to get a lot of help from my own manager and services VP. After applying myself more that I had in the past, I was able to come up with a process that allowed me to work cases with technical acumen while also making customers and management happy. I found that if you are disciplined and stick to a process, you can be extremely productive when working from home.
+
+I don't believe I ever got much better at the technical end of the job but over time, I found many ways to improve my productivity and customer service ratings. While I did not care much for the support end of things, I did find that I enjoyed refining my process and this made the job at least tolerable. 
+
+In 2016 I was able to impress enough people at least to the point where I was selected to Alfresco's President's Club and my wife and I got to go to Kauai for a week. This was an honor usually for sales employees but each year there are a few spots open for those in technical and management spots who do an unusually good job.
+
+So, the point I guess I'm trying to make with all this is that yes, it does help to love what you do but also it is possible to do a very good job at something that you don't necessarily enjoy. You can definitely find something in your role that you do like about it, put forth a full effort and be a top performer. It's well known that those who have the most control over their position tend to enjoy it more than those who don't. So, for me, it was finding a process that I had a measure of control over, using my own development skills to create tools that helped me do my job better and being proactive in learning better people skills.
+
+I have been honored this week after letting my fellow teammates know of my move by having a few of them insist on setting up a conference with me so that I can pass on knowledge of what I've done to be successful to them. What I find funny though is that no one has been interested in my accumulated knowledge of Alfresco. To be honest, I don't know any more than they do about the product. But, I think some have recognized that I do have some kind of system going on that has allowed me to be generally 50% more productive than most others.
+
+Here are a few productivity points I've made use of while working in technical support:
+
+* Always make yourself available to your supervisor/manager should they need you. Never tell them you don't want to work on something and never let on that you're worried that if you pick up more work, you won't be able to complete it. Just do it and if later you find that you can't keep up, then let me know about it.
+
+* Now, so that you can comply with point #1, keep your workload somewhere in the middle of where everyone else is on your team. Don't go below it. If you do, immediately pick up more work (for us, it was cases) to maintain the middle should you go below that point. If there is nothing available at that moment, check back often and pick up cases to even things out.
+
+* Don't go _above_ the average workload either (unless there are some very simple cases that you know a quick answer to). Sure, you want to be an achiever but by keeping things even, you are then available to do more should your supervisor/manager ask you to pick up additional work. It will be easier to not say no or be worried you won't be able to finish tasks on time.
+
+* When you go looking for work to do, only "grab" those cases that you are qualified to work on. If it means that you need to grab one case to put your case count in the middle, grab the case with the issue that interests you the most (assuming you have a choice). 
+
+* If your support team makes use of surveys and you have access to them via the case you're potentially working on, look through them. To be honest, there are simply jerk customers who delight in giving bad surveys/reviews. Avoid them if possible. I realize this may not seem fair to others -- don't worry though, you will get your fair share of these no matter how much you try to avoid them. A positive thing to come out of this is that this will likely delay help to those customers. They will then either give worse surveys (this will raise the attention to management that these customers have a trend of being shits) or it may prompt the customer to understand that they are getting bad treatment because they are assholes. On the other hand, if the customer has been known to give great survey ratings, then try to work those even if you're not familiar with the issue type the case is about. It's very likely that this type of customer is very patient and will continue to be patient with you as you take the time to work, learn and solve his/her problem.
+
+* If possible, keep high severity/priority cases to no more than 30-40% of your case load. Again, this helps to keep you from having to constantly respond to high priority tasks and gives you time to focus properly on the ones you do have so that none of your customers feel that you're not giving enough attention to their issues.
+
+* In the morning only respond to cases that are shown as open. You simply send a note of acknowledgement to the customer, let them know you read their message and then let them know the day/time when you will get back to them. If you don't set that expectation, the customer will set his/her own expectation and will bother you for an update a lot sooner otherwise. Leave Pending Customer cases as is and do not chase them until the end of the day. This will help give your day some stability and allow you to be as productive as possible. A lot of customers (and managers) don't understand that incessant unnecessary communication (phone calls, emails, screenshares) can kill your productivity. Managers often do not understand that there is a mental cost when an engineer has to switch focus on subjects. I realize customers are king but distractions should be kept to a minimum. If your developers are allowed to avoid distractions, then the same goes for all other technical people who are on your staff. So, it's best that you can first plan out your day and then work on each case one by one according to priority.
+
+* This is optional but I prefer to work on my in-progress cases based on which ones I can respond to the quickest. Of course, if I am dealing with a Sev 1 or very urgent Sev 2 case, then I will give those my immediate focus. But, otherwise, I prefer to dive right into the ones that I understand the best so that I can get those done first before moving on to more difficult issues.
+
+* Another optional method of communication is to hold all responses to the end of the half of the day and send them then. In other words, if it's 9:30 am and I have a response for a non-urgent case, I will typically save the response in a text file and then send it to the customer at about lunch time. If you're going to do this though, make sure your response is very well thought-out and as comprehensive of an answer as possible. In this situation, you want to anticipate anything your customer might respond with and have an answer for in that correspondence. This will help keep trivial responses and distractions to a minimum. It will also on occasion give you more time to think of things to add to the message as well.
+
+* Chase your Pending Customer cases at the end of the day. If you do this in the morning, it will give the customer the opportunity to inject unnecessary distractions into your day. If the issue is urgent, don't worry, he/she will send you a note on his own to remind but let him/her do that on his own.
+
+I've tried to articulate these points to where they are general enough to apply to most any workflow you might use in your job even if you don't do technical support or even work with technology. I think these are a good way to get the most done and help customers be successful.
+
+
