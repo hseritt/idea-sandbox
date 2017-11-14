@@ -1,0 +1,151 @@
+
+Python - PEP 8 Series - Identation
+
+Consistent indentation of code is key for Python as you can get some painful indentation errors. If you really want to avoid that problem all together, always use 4 spaces for indentation. Also, avoid tabs, you don't need them.
+
+Keep your lines at 79 characters or less. Continue to the next line with a hanging indentation:
+
+*Good* (as long as you don't go over 79 characters)
+
+```python
+def fancy_long_func_name(my_var_1, my_var_2, my_var_3, my_var_4):
+    do_stuff()
+```
+
+```python
+def fancy_long_func_name(
+    my_var_1, my_var_2, my_var_3, my_var_4):
+    do_stuff()
+```
+
+def fancy_long_func_name(
+    my_var_1, my_var_2,
+    my_var_3, my_var_4):
+    do_stuff()
+```
+
+*Bad*
+
+```python
+def my_func(
+    var_one,
+    var_two,
+    var_three,
+    var_four
+    ):
+    do_stuff()
+```
+
+*Bad*
+
+```python
+def my_func(var_one, var_two,
+    var_three, var_four):
+    do_stuff()
+```
+
+Compound statement indentations:
+
+*Meh* for if statements
+
+```python
+if temp >= my_max and temp <= my_celing and temp == 88:
+    do_stuff()
+```
+
+*Good*
+
+```python
+if temp > my_max and \
+    temp <= my_ceiling and \
+    temp == 88:
+    do_stuff()
+```
+
+*Good*
+
+```python
+with open('test1.txt', 'r') as fh1,
+    open('test2.txt', 'r') as fh2,
+    open('test3.txt', 'r') as fh3:
+    do_stuff()
+```
+
+Binary operator line breaks:
+
+*Ok* (was considered good and acceptable some time ago in most circles)
+
+```python
+total = num1 + \
+        num2 + \
+        num3 + \
+        num4
+```
+
+*Better*
+
+```python
+total = num1 \
+    + num2 \
+    + num3 \
+    + num4
+```
+
+*Best* Use parenthesis!
+
+```python
+total = (num1
+    + num2
+    + num3
+    + num4
+)
+
+String continuation indentations:
+
+*Bad*
+
+```python
+my_long_str = 'We wish you a merry Christmas, We wish you a merry Christmas, We wish you a merry Christmas and a Happy New Year!'
+```
+
+*Ok*
+
+```python
+my_long_str = 'We wish you a merry Christmas, ' \
+    + 'We wish you a merry Christmas, ' \
+    + 'We wish you a merry Christmas ' \
+    + 'and a Happy New Year!'
+```
+
+*Best*
+
+```python
+my_long_str = 'We wish you a merry Christmas, ' \
+    'We wish you a merry Christmas, ' \
+    'We wish you a merry Christmas ' \
+    'and a Happy New Year!'
+```
+
+Also, remember that you can assign _and_ print string literals like so:
+
+```python
+my_long_str = (
+    'We wish you a merry Christmas, '
+    'We wish you a merry Christmas, '
+    'We wish you a merry Christmas '
+    'and a Happy New Year!'
+)
+```
+
+or with print():
+
+```python
+print(
+    'We wish you a merry Christmas, '
+    'We wish you a merry Christmas, '
+    'We wish you a merry Christmas '
+    'and a Happy New Year!'
+)
+```
+
+Got it? Good.
